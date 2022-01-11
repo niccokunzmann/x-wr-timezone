@@ -50,15 +50,36 @@ class TestCalendar:
     def __repr__(self):
         return "<{}>".format(self.id)
 
+    def as_bytes(self):
+        with open(self.path, "rb") as file:
+            return file.read()
+
+    def as_icalendar(self):
+        return icalendar.Calendar.from_ical(self.as_bytes())
+
 for calendar_file in os.listdir(CALENDARS_FOLDER):
     calendar_path = os.path.join(CALENDARS_FOLDER, calendar_file)
     calendar = TestCalendar(calendar_path)
     calendars[calendar.name] = calendar
 
+class CalendarPair:
+    """A pair of input and output calendars."""
+
+    def __init__(self, input, output):
+        self.input = input
+        self.output = output
+
+    @property
+    def message(self):
+        return "Pair of {} + {}".format(self.input.name, NAME_END_OUTPUT)
+
+    def __repr__(self):
+        return "<{}+{}>".format(self.input.name, NAME_END_OUTPUT)
+
 # for parametrizing fixtures, see https://docs.pytest.org/en/latest/fixture.html#parametrizing-fixtures
 @pytest.fixture(params=[calendar for calendar in calendars.values() if calendar.is_input() and calendar.has_corrected_output()])
 def calendar_pair(request):
-    return CaledarPair(request.param(), request.param().get_corrected_output())
+    return CalendarPair(request.param, request.param.get_corrected_output())
 
 @pytest.fixture()
 def to_standard():
