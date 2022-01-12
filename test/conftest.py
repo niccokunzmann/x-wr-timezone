@@ -61,6 +61,9 @@ class TestCalendar:
     def as_icalendar(self):
         return icalendar.Calendar.from_ical(self.as_bytes())
 
+    def to_ical(self):
+        return self.as_icalendar().to_ical()
+
 for calendar_file in os.listdir(CALENDARS_FOLDER):
     calendar_path = os.path.join(CALENDARS_FOLDER, calendar_file)
     calendar = TestCalendar(calendar_path)
