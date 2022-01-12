@@ -3,11 +3,12 @@ PRODID:-//Google Inc//Google Calendar 70.9054//EN
 VERSION:2.0
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
-X-WR-CALNAME:This calendar uses X-WR-TIMEZONE but all events are already in the expected time zone.
+X-WR-CALNAME:This calendar uses X-WR-TIMEZONE but all events are already i
+ n the expected time zone.
 X-WR-TIMEZONE:America/New_York
 BEGIN:VEVENT
-DTSTART;TZID=America/New_York:20211222T170000Z
-DTEND;TZID=America/New_York:20211222T180000Z
+DTSTART;TZID=America/New_York:20211222T170000
+DTEND;TZID=America/New_York:20211222T180000
 DTSTAMP:20211228T183100Z
 UID:2tsd6j1s661b7pvlcuopnoa2fe@google.com
 CREATED:20211228T183040Z

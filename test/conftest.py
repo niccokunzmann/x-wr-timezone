@@ -14,7 +14,7 @@ CALENDARS_FOLDER = os.path.join(HERE, "calendars")
 NAME_END_INPUT = ".in"
 NAME_END_OUTPUT = ".out"
 
-calendars = {} # name: calendar
+example_calendars = {} # name: calendar
 
 class TestCalendar:
     """A calendar in the test folder."""
@@ -23,11 +23,17 @@ class TestCalendar:
         self.path = path
 
     @property
+    def filename(self):
+        return os.path.basename(self.path)
+
+    @property
+    def filename_without_ending(self):
+        return os.path.splitext(self.filename)[0]
+
+    @property
     def name(self):
         """Return the nicely readable id of the calendar."""
-        name = os.path.basename(self.path)
-        name = os.path.splitext(name)[0]
-        return name.replace("-", " ")
+        return self.filename_without_ending.replace("-", " ")
 
     def is_input(self):
         """Whether this is a calendar which is used as an input for to_standard()."""
@@ -43,13 +49,13 @@ class TestCalendar:
 
     def has_corrected_output(self):
         """Whether this has a calendar resulting from to_standard()."""
-        return self.get_corrected_output_name() in calendars
+        return self.get_corrected_output_name() in example_calendars
 
     def get_corrected_output(self):
         """Return the corrected output of to_standard() for this calendar.
 
         KeyError if absent."""
-        return calendars[self.get_corrected_output_name()]
+        return example_calendars[self.get_corrected_output_name()]
 
     def __repr__(self):
         return "<{}>".format(self.name)
@@ -67,8 +73,9 @@ class TestCalendar:
 for calendar_file in os.listdir(CALENDARS_FOLDER):
     calendar_path = os.path.join(CALENDARS_FOLDER, calendar_file)
     calendar = TestCalendar(calendar_path)
-    calendars[calendar.name] = calendar
-    calendars[calendar.name.replace(" ", "-")] = calendar
+    example_calendars[calendar.name] = calendar
+    example_calendars[calendar.filename] = calendar
+    example_calendars[calendar.filename_without_ending] = calendar
 
 class CalendarPair:
     """A pair of input and output calendars."""
@@ -86,12 +93,12 @@ class CalendarPair:
         return "<{}+{}>".format(self.input.name, NAME_END_OUTPUT)
 
 # for parametrizing fixtures, see https://docs.pytest.org/en/latest/fixture.html#parametrizing-fixtures
-@pytest.fixture(params=[calendar for calendar in calendars.values() if calendar.is_input() and calendar.has_corrected_output()])
+@pytest.fixture(params=[calendar for calendar in example_calendars.values() if calendar.is_input() and calendar.has_corrected_output()])
 def calendar_pair(request):
     return CalendarPair(request.param, request.param.get_corrected_output())
 
 
-@pytest.fixture(params=[calendar for calendar in calendars.values() if calendar.is_corrected_output()])
+@pytest.fixture(params=[calendar for calendar in example_calendars.values() if calendar.is_corrected_output()])
 def output_calendar(request):
     return request.param
 
@@ -105,8 +112,8 @@ def to_standard():
 
 
 @pytest.fixture()
-def Calendars():
-    return calendars
+def calendars():
+    return example_calendars
 
 
 @pytest.fixture()
