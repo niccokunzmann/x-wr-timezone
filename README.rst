@@ -13,11 +13,13 @@ using ``X-WR-TIMEZONE`` to a strict RFC 5545 calendars.
 So, let's put our heads together and solve this problem for everyone!
 
 Some features of the module are:
+
 - Easy install with Python's ``pip``.
 - Command line conversion of calendars.
 - Piping of calendar files with ``wget`` of ``curl``.
 
 Some of the requirements are:
+
 - Calendars without ``X-WR-TIMEZONE`` are kept unchanged.
 - Passing calendars twice to this module does not change them.
 
