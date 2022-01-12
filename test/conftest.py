@@ -52,7 +52,7 @@ class TestCalendar:
         return calendars[self.get_corrected_output_name()]
 
     def __repr__(self):
-        return "<{}>".format(self.id)
+        return "<{}>".format(self.name)
 
     def as_bytes(self):
         with open(self.path, "rb") as file:
@@ -65,6 +65,7 @@ for calendar_file in os.listdir(CALENDARS_FOLDER):
     calendar_path = os.path.join(CALENDARS_FOLDER, calendar_file)
     calendar = TestCalendar(calendar_path)
     calendars[calendar.name] = calendar
+    calendars[calendar.name.replace(" ", "-")] = calendar
 
 class CalendarPair:
     """A pair of input and output calendars."""
@@ -97,6 +98,12 @@ def to_standard():
     """Skip a test because it needs to be written first."""
     import x_wr_timezone
     return x_wr_timezone.to_standard
+
+
+
+@pytest.fixture()
+def Calendars():
+    return calendars
 
 
 @pytest.fixture()
