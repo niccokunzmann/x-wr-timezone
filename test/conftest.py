@@ -33,6 +33,10 @@ class TestCalendar:
         """Whether this is a calendar which is used as an input for to_standard()."""
         return self.name.endswith(NAME_END_INPUT)
 
+    def is_corrected_output(self):
+        """Whether this is a calendar which would be a result of to_standard()."""
+        return self.name.endswith(NAME_END_OUTPUT)
+
     def get_corrected_output_name(self):
         assert self.is_input(), "Only input calendars can have an output."
         return self.name[:len(self.name) - len(NAME_END_INPUT)] + NAME_END_OUTPUT
@@ -82,11 +86,18 @@ class CalendarPair:
 def calendar_pair(request):
     return CalendarPair(request.param, request.param.get_corrected_output())
 
+
+@pytest.fixture(params=[calendar for calendar in calendars.values() if calendar.is_corrected_output()])
+def output_calendar(request):
+    return request.param
+
+
 @pytest.fixture()
 def to_standard():
     """Skip a test because it needs to be written first."""
     import x_wr_timezone
     return x_wr_timezone.to_standard
+
 
 @pytest.fixture()
 def todo():
