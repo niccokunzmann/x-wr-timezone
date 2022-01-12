@@ -28,7 +28,7 @@ Install
 
 Install using ``pip``:
 
-.. code::shell
+.. code:: shell
 
     python3 -m pip install x-wr-timezone
 
@@ -40,7 +40,7 @@ The examples assume that ``in.ics`` is a calendar which may use
 ``X-WR-TIMEZONE``. whereas ``out.ics`` does not require ``X-WR-TIMEZONE``
 for proper display.
 
-.. code::shell
+.. code-block:: shell
 
     cat in.is | x-wr-timezone > out.ics
     x-wr-timezone in.ics out.ics
@@ -52,19 +52,19 @@ Python
 
 After you have installed the library, you an import it.
 
-.. code::Python
+.. code:: python
 
     import x_wr_timezone
 
 The function ``to_standard()`` converts an ``icalendar`` object.
 
-.. code::Python
+.. code:: python
 
     x_wr_timezone.to_standard(an_icalendar)
 
 Here is a full example which does about as much as this module is supposed to do:
 
-.. code::Python
+.. code-block:: python
 
     import icalendar # installed wih x_wr_timezone
     import x_wr_timezone
