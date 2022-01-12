@@ -71,7 +71,8 @@ class CalendarPair:
 
     @property
     def message(self):
-        return "Pair of {} + {}".format(self.input.name, NAME_END_OUTPUT)
+        return self.input.as_icalendar().get("X-WR-CALNAME",
+            "Pair of {} + {}".format(self.input.name, NAME_END_OUTPUT))
 
     def __repr__(self):
         return "<{}+{}>".format(self.input.name, NAME_END_OUTPUT)
