@@ -23,6 +23,8 @@ def test_output_stays_the_same(to_standard, output_calendar):
 
 def RDATE(dt):
     return ("rdate-hackerpublicradio.in.ics", ("RDATE", "TZID=Europe/London", dt), "RDATE is converted with value " + dt)
+def EXDATE(dt):
+    return ("exdate-hackerpublicradio-modified.in.ics", ("EXDATE", "TZID=Europe/London", dt), "EXDATE is converted with value " + dt)
 
 
 @pytest.mark.parametrize("calendar_name,content,message", [
@@ -51,6 +53,19 @@ def RDATE(dt):
     ("moved-event-RECURRENCE-ID.in.ics", ("RECURRENCE-ID", "TZID=Europe/Berlin", "20211231T213000"), "The RECURRENCE-ID  depends on DTSTART and should therefore be converted."),
     ("moved-event-RECURRENCE-ID.in.ics", ("DTSTART", "TZID=Europe/Berlin", "20211126T21"), "DTSTART is converted."),
     ("moved-event-RECURRENCE-ID.in.ics", ("DTEND", "TZID=Europe/Berlin", "20211126T213000"), "DTEND is converted."),
+    # test EXDATE
+    EXDATE("20130803T200000"), # summer
+    EXDATE("20130831T200000"), # summer
+    EXDATE("20131005T200000"), # summer
+    EXDATE("20131102T190000"),
+    EXDATE("20131130T190000"),
+    EXDATE("20140104T190000"),
+    EXDATE("20140201T190000"),
+    EXDATE("20140301T190000"),
+    EXDATE("20140405T200000"), # summer
+    EXDATE("20140503T200000"), # summer
+    EXDATE("20140531T200000"), # summer
+    EXDATE("20140705T200000"), # summer
 ])
 def test_conversion_changes_the_time_zone(to_standard, calendars, calendar_name, content, message):
     calendar = calendars[calendar_name]
