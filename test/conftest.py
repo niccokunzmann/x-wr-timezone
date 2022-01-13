@@ -129,7 +129,7 @@ def to_standard_cmd_file(calendar):
     return icalendar.Calendar.from_ical(output)
 
 conversions = {
-    "all": [x_wr_timezone.to_standard, to_standard_cmd_stdio],
+    "all": [x_wr_timezone.to_standard, to_standard_cmd_stdio, to_standard_cmd_file],
     "fast": [x_wr_timezone.to_standard],
     "io": [to_standard_cmd_stdio],
     "file": [to_standard_cmd_file],
