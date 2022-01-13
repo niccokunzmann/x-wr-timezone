@@ -99,11 +99,13 @@ class CalendarPair:
 # for parametrizing fixtures, see https://docs.pytest.org/en/latest/fixture.html#parametrizing-fixtures
 @pytest.fixture(params=[calendar for calendar in example_calendars.values() if calendar.is_input() and calendar.has_corrected_output()])
 def calendar_pair(request):
+    """A pair of input and output calendar examples from the test/calendars folder."""
     return CalendarPair(request.param, request.param.get_corrected_output())
 
 
 @pytest.fixture(params=[calendar for calendar in example_calendars.values() if calendar.is_corrected_output()])
 def output_calendar(request):
+    """A TestCalendar ending with .out in from the test/calendars folder."""
     return request.param
 
 
@@ -114,16 +116,45 @@ def to_standard_cmd_stdio(calendar):
     return icalendar.Calendar.from_ical(output)
 
 
-@pytest.fixture(params=[x_wr_timezone.to_standard, to_standard_cmd_stdio])
-def to_standard(request):
-    """change the to_standard() function to test several different methods.."""
-    return request.param
+conversions = {
+    "all": [x_wr_timezone.to_standard, to_standard_cmd_stdio],
+    "fast": [x_wr_timezone.to_standard],
+    "io": [to_standard_cmd_stdio],
+}
 
+@pytest.fixture(params=[x_wr_timezone.to_standard, to_standard_cmd_stdio])
+def to_standard(request, pytestconfig):
+    """Change the to_standard() function to test several different methods.
+
+    Use:
+    - fast - use x_wr_timezone.to_standard(...)
+    - io - use cat ... > x-wr-timezone
+    - file - use x-wr-timezone in.ics out.ics
+    - all - all of the above
+    """
+    to_standard = request.param
+    if to_standard not in conversions[pytestconfig.option.to_standard]:
+        pytest.skip("Use --x-wr-timezone=all to ativate all tests.")
+    return to_standard
+
+
+def pytest_addoption(parser):
+    group = parser.getgroup("x-wr-timezone")
+    group.addoption(
+        "--x-wr-timezone",
+        action="store",
+        dest="to_standard",
+        choices=("all", "file", "io", "fast"),
+        default="fast",
+        metavar="MODE",
+        help=to_standard.__doc__,
+    )
 
 
 @pytest.fixture()
 def calendars():
-    return example_calendars
+    """A mapping of all TestCalendars in the test/calendars folder."""
+    return example_calendars.copy()
 
 
 @pytest.fixture()

@@ -23,7 +23,7 @@ script:
   - python example.py
   # install test environment after testing example
   - pip install -r test-requirements.txt
-  - pytest
+  - pytest --x-wr-timezone=all
   # test that the tag represents the version
   # https://docs.travis-ci.com/user/environment-variables/#Default-Environment-Variables
   - ( if [ -n "$TRAVIS_TAG" ]; then if [ $TAG_NAME != $TRAVIS_TAG ]; then echo "This tag is for the wrong version. Got \"$TRAVIS_TAG\" expected \"$TAG_NAME\"."; exit 1; fi; fi; )
