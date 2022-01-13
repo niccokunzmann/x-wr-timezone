@@ -110,16 +110,17 @@ Here is a full example which does about as much as this module is supposed to do
 Development
 -----------
 
-1. Optional: Install virtualenv and Python3 and create a virtual environment.
+1. Clone the `repository <https://github.com/niccokunzmann/x-wr-timezone>`_ or its fork and ``cd x-wr-timezone``.
+2. Optional: Install virtualenv and Python3 and create a virtual environment.
     .. code-block:: shell
 
         virtualenv -p python3 ENV
         source ENV/bin/activate
-2. Install the packages.
+3. Install the packages.
     .. code-block:: shell
 
         pip install -r test-requirements.txt -e .
-3. Run the tests
+4. Run the tests
     .. code-block:: shell
 
         pytest
