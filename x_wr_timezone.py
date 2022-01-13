@@ -49,7 +49,6 @@ class TimeZoneChangingVisitor:
         """Visit a value type."""
         name = "visit_value_" + type(value).__name__
         visit = getattr(self, name, self.visit_value_default)
-        print("{}({})".format(visit.__name__, value))
         return visit(value)
 
     def visit_value_list(self, l):
@@ -62,7 +61,6 @@ class TimeZoneChangingVisitor:
 
     def visit_value_vDDDTypes(self, value):
         """Visit an icalendar value type"""
-        print("value", value.dt, value.to_ical())
         dt = self.visit_value(value.dt)
         return vDDDTypes(dt)
 
