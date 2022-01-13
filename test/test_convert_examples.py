@@ -22,7 +22,15 @@ def test_output_stays_the_same(to_standard, output_calendar):
 
 
 @pytest.mark.parametrize("calendar_name,content,message", [
-    ("single-events-DTSTART-DTEND.in.ics", ("DTSTART", "TZID=America/New_York", ":20211222T120000"), "DTSTART should be converted.")
+# DTSTART;TZID=America/New_York:20211222T120000
+# DTEND;TZID=America/New_York:20211222T130000
+    ("single-events-DTSTART-DTEND.in.ics", ("DTSTART", "TZID=America/New_York", ":20211222T120000"), "DTSTART should be converted."),
+    ("single-events-DTSTART-DTEND.in.ics", ("DTEND", "TZID=America/New_York", ":20211222T130000"), "DTEND should be converted."),
+    ("single-events-DTSTART-DTEND.out.ics", ("DTSTART", "TZID=America/New_York", ":20211222T120000"), "DTSTART stays the same in already converted calendar."),
+# DTSTART;TZID=America/New_York:20211222T210000
+# DTEND;TZID=America/New_York:20211222T220000
+    ("single-events-DTSTART-DTEND.in.ics", ("DTSTART", "TZID=America/New_York", ":20211222T210000"), "DTSTART should be converted."),
+    ("single-events-DTSTART-DTEND.in.ics", ("DTEND", "TZID=America/New_York", ":20211222T220000"), "DTEND should be converted."),
 ])
 def test_conversion_changes_the_time_zone(to_standard, calendars, calendar_name, content, message):
     calendar = calendars[calendar_name]
