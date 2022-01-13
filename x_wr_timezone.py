@@ -21,7 +21,7 @@ X_WR_TIMEZONE = "X-WR-TIMEZONE"
 class TimeZoneChangingVisitor:
     """This implements a visitor pattern working on an icalendar object."""
 
-    VALUE_ATTRIBUTES = ['DTSTART', 'DTEND', 'RDATE']
+    VALUE_ATTRIBUTES = ['DTSTART', 'DTEND', 'RDATE', 'RECURRENCE-ID']
 
     old_timezone = pytz.UTC
 

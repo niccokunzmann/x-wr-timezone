@@ -29,7 +29,7 @@ BEGIN:VEVENT
 DTSTART;TZID=Europe/Berlin:20211217T213000
 DTSTAMP:20211218T004508Z
 UID:38m812jicsrer5gorh3mlp7qhc@google.com
-RECURRENCE-ID:20211231T223000Z
+RECURRENCE-ID:20211231T203000Z
 CREATED:20211218T004036Z
 DESCRIPTION:Jeden letzten Freitag im Monat <a href="https://www.instagram.c
  om/p/CWwxmqbKXsC/">https://www.instagram.com/p/CWwxmqbKXsC/</a>
