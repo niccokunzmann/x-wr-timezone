@@ -6,12 +6,12 @@ from setuptools.command.test import test as TestCommandBase
 from distutils.core import Command
 import subprocess
 
-PACKAGE_NAME = "recurring_ical_events"
+PACKAGE_NAME = "x_wr_calendar"
 
 HERE = os.path.abspath(os.path.dirname(__file__))
 sys.path.insert(0, HERE)  # for package import
 
-__version__ = "0.2.4b"
+__version__ = "0.0.1b"
 __author__ = 'Nicco Kunzmann'
 
 
@@ -40,9 +40,9 @@ METADATA = dict(
     py_modules=[PACKAGE_NAME],
     author=__author__,
     author_email='niccokunzmann@rambler.ru',
-    description='A Python module which repeats ICalendar events by RRULE, RDATE and EXDATE.',
+    description='A Python module and program to convert calendars using X-WR-TIMEZONE to standard ones.',
     license='LGPLv3+',
-    url='https://github.com/niccokunzmann/python-recurring-ical-events',
+    url='https://github.com/niccokunzmann/x-wr-timezone',
     keywords='icalendar',
 )
 
@@ -131,6 +131,9 @@ SETUPTOOLS_METADATA = dict(
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
         development_state
         ],
     zip_safe=True,
