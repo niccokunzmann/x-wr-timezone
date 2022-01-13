@@ -22,7 +22,7 @@ def test_output_stays_the_same(to_standard, output_calendar):
 
 
 def RDATE(dt):
-    return ("calendars/rdate-hackerpublicradio.in.ics", ("RDATE", "TZID=Europe/London", dt), "RDATE is converted with value " + dt)
+    return ("rdate-hackerpublicradio.in.ics", ("RDATE", "TZID=Europe/London", dt), "RDATE is converted with value " + dt)
 
 
 @pytest.mark.parametrize("calendar_name,content,message", [
