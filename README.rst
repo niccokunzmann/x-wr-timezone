@@ -1,6 +1,20 @@
 X-WR-TIMEZONE
 =============
 
+.. image:: https://app.travis-ci.com/niccokunzmann/x-wr-timezone.svg?branch=master
+   :target: https://app.travis-ci.com/github/niccokunzmann/x-wr-timezone
+   :alt: Travis Build and Tests Status
+
+.. image:: https://badge.fury.io/py/x-wr-timezone.svg
+   :target: https://pypi.python.org/pypi/x-wr-timezone
+   :alt: Python Package Version on Pypi
+
+.. image:: https://img.shields.io/pypi/dm/x-wr-timezone.svg
+   :target: https://pypi.python.org/pypi/x-wr-timezone#downloads
+   :alt: Downloads from Pypi
+
+
+
 Some calendar providers introduce the non-standard ``X-WR-TIMEZONE`` parameter
 to ICS calendar files.
 Strict interpretations according to RFC 5545 ignore the ``X-WR-TIMEZONE``
@@ -92,6 +106,61 @@ Here is a full example which does about as much as this module is supposed to do
     of the ``calendar`` argument is returned.
     Set ``in_place=True`` to have the ``calendar`` argument be changed and
     returned.
+
+Development
+-----------
+
+1. Optional: Install virtualenv and Python3 and create a virtual environment.
+    .. code-block:: shell
+
+        virtualenv -p python3 ENV
+        source ENV/bin/activate
+2. Install the packages.
+    .. code-block:: shell
+
+        pip install -r test-requirements.txt -e .
+3. Run the tests
+    .. code-block:: shell
+
+        pytest
+
+New Releases
+------------
+
+To release new versions,
+
+1. edit the Changelog Section
+2. edit setup.py, the ``__version__`` variable
+3. create a commit and push it
+4. Wait for `Travis <https://app.travis-ci.com/github/niccokunzmann/x-wr-timezone>`_ to finish the build.
+5. run
+    .. code-block:: shell
+
+        python3 setup.py tag_and_deploy
+6. notify the issues about their release
+
+Testing
+*******
+
+This project's development is driven by tests.
+Tests assure a consistent interface and less knowledge lost over time.
+If you like to change the code, tests help that nothing breaks in the future.
+They are required in that sense.
+Example code and ics files can be transferred into tests and speed up fixing bugs.
+
+You can view the tests in the `test folder
+<https://github.com/niccokunzmann/x-wr-timezones/tree/master/test>`_.
+If you have a calendar ICS file for which this library does not
+generate the desired output, you can add it to the ``test/calendars``
+folder and write tests for what you expect.
+If you like, `open an issue <https://github.com/niccokunzmann/x-wr-timezone/issues>`_ first, e.g. to discuss the changes and
+how to go about it.
+
+Changelog
+---------
+- v0.0.1
+    - Initial release supports DTSTART, DTEND, EXDATE, RDATE, RECURRENCE-ID attributes of events.
+    - Command line interface as `x-wr-timezone`.
 
 Related Work
 ------------
