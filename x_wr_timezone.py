@@ -11,10 +11,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """Bring calendars using X-WR-TIMEZONE into RFC 5545 form."""
+import sys
 import pytz
 from icalendar.prop import vDDDTypes, vDDDLists
 import datetime
-
+import icalendar
 
 X_WR_TIMEZONE = "X-WR-TIMEZONE"
 
@@ -81,3 +82,9 @@ def to_standard(calendar):
 
 def main():
     """Console entry point."""
+    # TODO: use raw input and output
+    input = sys.stdin.read().encode("UTF-8")
+    calendar = icalendar.Calendar.from_ical(input)
+    output = to_standard(calendar).to_ical()
+    sys.stdout.write(output.decode("UTF-8"))
+    return 0

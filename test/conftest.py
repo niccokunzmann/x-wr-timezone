@@ -1,8 +1,11 @@
 """Test and fixture initialization."""
+import x_wr_timezone
 import icalendar
 import pytest
 import sys
 import os
+import tempfile
+import subprocess
 
 HERE = os.path.dirname(__file__)
 REPO = os.path.dirname(HERE)
@@ -13,6 +16,7 @@ CALENDARS_FOLDER = os.path.join(HERE, "calendars")
 
 NAME_END_INPUT = ".in"
 NAME_END_OUTPUT = ".out"
+EXECUTABLE = 'x-wr-timezone'
 
 example_calendars = {} # name: calendar
 
@@ -103,11 +107,17 @@ def output_calendar(request):
     return request.param
 
 
-@pytest.fixture()
-def to_standard():
-    """Skip a test because it needs to be written first."""
-    import x_wr_timezone
-    return x_wr_timezone.to_standard
+def to_standard_cmd_stdio(calendar):
+    """Use the command line and piping."""
+    input = calendar.to_ical()
+    output = subprocess.check_output([EXECUTABLE], input=input)
+    return icalendar.Calendar.from_ical(output)
+
+
+@pytest.fixture(params=[x_wr_timezone.to_standard, to_standard_cmd_stdio])
+def to_standard(request):
+    """change the to_standard() function to test several different methods.."""
+    return request.param
 
 
 
