@@ -35,18 +35,18 @@ def RDATE(dt):
 # DTEND;TZID=America/New_York:20211222T220000
     ("single-events-DTSTART-DTEND.in.ics", ("DTSTART", "TZID=America/New_York", ":20211222T210000"), "DTSTART should be converted."),
     ("single-events-DTSTART-DTEND.in.ics", ("DTEND", "TZID=America/New_York", ":20211222T220000"), "DTEND should be converted."),
-    RDATE("20130803T190000"),
-    RDATE("20130831T190000"),
-    RDATE("20131005T190000"),
+    RDATE("20130803T200000"), # summer
+    RDATE("20130831T200000"), # summer
+    RDATE("20131005T200000"), # summer
     RDATE("20131102T190000"),
     RDATE("20131130T190000"),
     RDATE("20140104T190000"),
     RDATE("20140201T190000"),
     RDATE("20140301T190000"),
-    RDATE("20140405T190000"),
-    RDATE("20140503T190000"),
-    RDATE("20140531T190000"),
-    RDATE("20140705T190000"),
+    RDATE("20140405T200000"), # summer
+    RDATE("20140503T200000"), # summer
+    RDATE("20140531T200000"), # summer
+    RDATE("20140705T200000"), # summer
 ])
 def test_conversion_changes_the_time_zone(to_standard, calendars, calendar_name, content, message):
     calendar = calendars[calendar_name]

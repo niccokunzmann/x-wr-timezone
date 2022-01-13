@@ -1,14 +1,27 @@
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """Bring calendars using X-WR-TIMEZONE into RFC 5545 form."""
 import pytz
-from icalendar.prop import vDDDTypes
+from icalendar.prop import vDDDTypes, vDDDLists
 import datetime
+
 
 X_WR_TIMEZONE = "X-WR-TIMEZONE"
 
 class TimeZoneChangingVisitor:
     """This implements a visitor pattern working on an icalendar object."""
 
-    VALUE_ATTRIBUTES = ['DTSTART', 'DTEND']
+    VALUE_ATTRIBUTES = ['DTSTART', 'DTEND', 'RDATE']
 
     old_timezone = pytz.UTC
 
@@ -23,16 +36,38 @@ class TimeZoneChangingVisitor:
 
     def visit_event(self, event):
         for attribute in self.VALUE_ATTRIBUTES:
-            event[attribute] = self.visit_value(event[attribute])
+            value = event.get(attribute)
+            if value is not None:
+                event[attribute] = self.visit_value(value)
 
-    def visit_value(self, value):
-        print("value", value.dt, value.to_ical())
-        if isinstance(value.dt, datetime.datetime):
-            dt = self.visit_datetime(value.dt)
-            return vDDDTypes(dt)
+    def visit_value_default(self, value):
+        """Default method for visiting a value type."""
         return value
 
-    def visit_datetime(self, dt):
+
+    def visit_value(self, value):
+        """Visit a value type."""
+        name = "visit_value_" + type(value).__name__
+        visit = getattr(self, name, self.visit_value_default)
+        print("{}({})".format(visit.__name__, value))
+        return visit(value)
+
+    def visit_value_list(self, l):
+        """Visit a list of values."""
+        return list(map(self.visit_value, l))
+
+    def visit_value_vDDDLists(self, l):
+        dts = [self.visit_value(ddd.dt) for ddd in l.dts]
+        return vDDDLists(dts)
+
+    def visit_value_vDDDTypes(self, value):
+        """Visit an icalendar value type"""
+        print("value", value.dt, value.to_ical())
+        dt = self.visit_value(value.dt)
+        return vDDDTypes(dt)
+
+    def visit_value_datetime(self, dt):
+        """Visit a datetime.datetime object."""
         if dt.tzinfo == self.old_timezone:
             return dt.astimezone(self.new_timezone)
         return dt
