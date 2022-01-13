@@ -21,6 +21,10 @@ def test_output_stays_the_same(to_standard, output_calendar):
     assert output == output_calendar.as_icalendar(), "A calendar that was modified one should stay as it is."
 
 
+def RDATE(dt):
+    return ("calendars/rdate-hackerpublicradio.in.ics", ("RDATE", "TZID=Europe/London", dt), "RDATE is converted with value " + dt)
+
+
 @pytest.mark.parametrize("calendar_name,content,message", [
 # DTSTART;TZID=America/New_York:20211222T120000
 # DTEND;TZID=America/New_York:20211222T130000
@@ -31,6 +35,18 @@ def test_output_stays_the_same(to_standard, output_calendar):
 # DTEND;TZID=America/New_York:20211222T220000
     ("single-events-DTSTART-DTEND.in.ics", ("DTSTART", "TZID=America/New_York", ":20211222T210000"), "DTSTART should be converted."),
     ("single-events-DTSTART-DTEND.in.ics", ("DTEND", "TZID=America/New_York", ":20211222T220000"), "DTEND should be converted."),
+    RDATE("20130803T190000"),
+    RDATE("20130831T190000"),
+    RDATE("20131005T190000"),
+    RDATE("20131102T190000"),
+    RDATE("20131130T190000"),
+    RDATE("20140104T190000"),
+    RDATE("20140201T190000"),
+    RDATE("20140301T190000"),
+    RDATE("20140405T190000"),
+    RDATE("20140503T190000"),
+    RDATE("20140531T190000"),
+    RDATE("20140705T190000"),
 ])
 def test_conversion_changes_the_time_zone(to_standard, calendars, calendar_name, content, message):
     calendar = calendars[calendar_name]

@@ -1,6 +1,7 @@
 """Bring calendars using X-WR-TIMEZONE into RFC 5545 form."""
 import pytz
 from icalendar.prop import vDDDTypes
+import datetime
 
 X_WR_TIMEZONE = "X-WR-TIMEZONE"
 
@@ -26,12 +27,15 @@ class TimeZoneChangingVisitor:
 
     def visit_value(self, value):
         print("value", value.dt, value.to_ical())
-        dt = value.dt
-        if dt.tzinfo == self.old_timezone:
-            dt = dt.astimezone(self.new_timezone)
-            value = vDDDTypes(dt)
-            print("match!", value.dt, value.dt.tzinfo, value.to_ical())
+        if isinstance(value.dt, datetime.datetime):
+            dt = self.visit_datetime(value.dt)
+            return vDDDTypes(dt)
         return value
+
+    def visit_datetime(self, dt):
+        if dt.tzinfo == self.old_timezone:
+            return dt.astimezone(self.new_timezone)
+        return dt
 
 def to_standard(calendar):
     """Make a calendar that might use X-WR-TIMEZONE compatible with RFC 5545."""
