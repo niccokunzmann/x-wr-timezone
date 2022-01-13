@@ -78,3 +78,6 @@ def to_standard(calendar):
         visitor = TimeZoneChangingVisitor(new_timezone)
         visitor.visit(calendar)
     return calendar
+
+def main():
+    """Console entry point."""

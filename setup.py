@@ -11,7 +11,7 @@ PACKAGE_NAME = "x_wr_timezone"
 HERE = os.path.abspath(os.path.dirname(__file__))
 sys.path.insert(0, HERE)  # for package import
 
-__version__ = "0.0.1b"
+__version__ = "0.0.1"
 __author__ = 'Nicco Kunzmann'
 
 
@@ -44,6 +44,7 @@ METADATA = dict(
     license='LGPLv3+',
     url='https://github.com/niccokunzmann/x-wr-timezone',
     keywords='icalendar',
+    entry_points="[console_scripts]\nx-wr-timezone = x_wr_timezone:main",
 )
 
 # set development status from __version__
