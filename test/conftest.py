@@ -116,13 +116,30 @@ def to_standard_cmd_stdio(calendar):
     return icalendar.Calendar.from_ical(output)
 
 
+def to_standard_cmd_file(calendar):
+    with tempfile.TemporaryDirectory() as d:
+        input = calendar.to_ical()
+        in_path = os.path.join(d, "in.ics")
+        out_path = os.path.join(d, "out.ics")
+        with open(in_path, 'wb') as f:
+            f.write(input)
+        subprocess.check_call([EXECUTABLE, in_path, out_path])
+        with open(out_path, 'rb') as f:
+            output = f.read()
+    return icalendar.Calendar.from_ical(output)
+
 conversions = {
     "all": [x_wr_timezone.to_standard, to_standard_cmd_stdio],
     "fast": [x_wr_timezone.to_standard],
     "io": [to_standard_cmd_stdio],
+    "file": [to_standard_cmd_file],
 }
 
-@pytest.fixture(params=[x_wr_timezone.to_standard, to_standard_cmd_stdio])
+@pytest.fixture(params=[
+    x_wr_timezone.to_standard,
+    to_standard_cmd_stdio,
+    to_standard_cmd_file,
+])
 def to_standard(request, pytestconfig):
     """Change the to_standard() function to test several different methods.
 

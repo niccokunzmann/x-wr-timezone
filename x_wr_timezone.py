@@ -81,10 +81,41 @@ def to_standard(calendar):
     return calendar
 
 def main():
-    """Console entry point."""
+    """x-wr-timezone converts ICSfiles with X-WR-TIMEZONE to use RFC 5545 instead.
+
+    Convert input:
+
+        cat in.ics | x-wr-timezone > out.ics
+        wget -O- https://example.org/in.ics | x-wr-timezone > out.ics
+        curl https://example.org/in.ics | x-wr-timezone > out.ics
+
+    Convert files:
+
+        x-wr-timezone in.ics out.ics
+
+    Get help:
+
+        x-wr-timezone --help
+
+    For bug reports, code and questions, visit the projet page:
+
+        https://github.com/niccokunzmann/x-wr-timezone
+
+    License: LPGLv3+
+    """
     # TODO: use raw input and output
-    input = sys.stdin.read().encode("UTF-8")
-    calendar = icalendar.Calendar.from_ical(input)
-    output = to_standard(calendar).to_ical()
-    sys.stdout.write(output.decode("UTF-8"))
+    if len(sys.argv) == 1:
+        input = sys.stdin.read().encode("UTF-8")
+        calendar = icalendar.Calendar.from_ical(input)
+        output = to_standard(calendar).to_ical()
+        sys.stdout.write(output.decode("UTF-8"))
+    elif len(sys.argv) == 3:
+        with open(sys.argv[1], 'rb') as in_file:
+            input = in_file.read()
+        calendar = icalendar.Calendar.from_ical(input)
+        output = to_standard(calendar).to_ical()
+        with open(sys.argv[2], 'wb') as out_file:
+            out_file.write(output)
+    else:
+        print(main.__doc__)
     return 0
