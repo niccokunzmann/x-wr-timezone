@@ -48,9 +48,9 @@ def RDATE(dt):
     RDATE("20140531T200000"), # summer
     RDATE("20140705T200000"), # summer
     # RECURRENCE-ID as well as DTSTART and DTEND
-    ("moved-event-RECURRENCE-ID.ics", ("RECURRENCE-ID", "TZID=Europe/Berlin", "20211231T213000"), "The RECURRENCE-ID  depends on DTSTART and should therefore be converted.")
-    ("moved-event-RECURRENCE-ID.ics", ("DTSTART", "TZID=Europe/Berlin", "20211126T21"), "DTSTART is converted.")
-    ("moved-event-RECURRENCE-ID.ics", ("DTEND", "TZID=Europe/Berlin", "20211126T213000"), "DTSTART is converted.")
+    ("moved-event-RECURRENCE-ID.in.ics", ("RECURRENCE-ID", "TZID=Europe/Berlin", "20211231T213000"), "The RECURRENCE-ID  depends on DTSTART and should therefore be converted."),
+    ("moved-event-RECURRENCE-ID.in.ics", ("DTSTART", "TZID=Europe/Berlin", "20211126T21"), "DTSTART is converted."),
+    ("moved-event-RECURRENCE-ID.in.ics", ("DTEND", "TZID=Europe/Berlin", "20211126T213000"), "DTEND is converted."),
 ])
 def test_conversion_changes_the_time_zone(to_standard, calendars, calendar_name, content, message):
     calendar = calendars[calendar_name]
