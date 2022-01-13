@@ -6,7 +6,7 @@ from setuptools.command.test import test as TestCommandBase
 from distutils.core import Command
 import subprocess
 
-PACKAGE_NAME = "x_wr_calendar"
+PACKAGE_NAME = "x_wr_timezone"
 
 HERE = os.path.abspath(os.path.dirname(__file__))
 sys.path.insert(0, HERE)  # for package import
