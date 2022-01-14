@@ -5,6 +5,7 @@ import pytest
 import sys
 import os
 import tempfile
+import shutil
 import subprocess
 
 HERE = os.path.dirname(__file__)
@@ -112,12 +113,15 @@ def output_calendar(request):
 def to_standard_cmd_stdio(calendar):
     """Use the command line and piping."""
     input = calendar.to_ical()
-    output = subprocess.check_output([EXECUTABLE], input=input)
+    process = subprocess.Popen([EXECUTABLE], stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+    output = process.communicate(input)[0]
+    assert process.returncode == 0, "The process should not error."
     return icalendar.Calendar.from_ical(output)
 
 
 def to_standard_cmd_file(calendar):
-    with tempfile.TemporaryDirectory() as d:
+    d = tempfile.mkdtemp(prefix="pytest-")
+    try:
         input = calendar.to_ical()
         in_path = os.path.join(d, "in.ics")
         out_path = os.path.join(d, "out.ics")
@@ -126,6 +130,8 @@ def to_standard_cmd_file(calendar):
         subprocess.check_call([EXECUTABLE, in_path, out_path])
         with open(out_path, 'rb') as f:
             output = f.read()
+    finally:
+        shutil.rmtree(d)
     return icalendar.Calendar.from_ical(output)
 
 conversions = {

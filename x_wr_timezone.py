@@ -103,19 +103,17 @@ def main():
 
     License: LPGLv3+
     """
-    # TODO: use raw input and output
     if len(sys.argv) == 1:
-        input = sys.stdin.read().encode("UTF-8")
-        calendar = icalendar.Calendar.from_ical(input)
-        output = to_standard(calendar).to_ical()
-        sys.stdout.write(output.decode("UTF-8"))
+        in_file = getattr(sys.stdin, "buffer", sys.stdin)
+        out_file = getattr(sys.stdout, "buffer", sys.stdout)
     elif len(sys.argv) == 3:
-        with open(sys.argv[1], 'rb') as in_file:
-            input = in_file.read()
-        calendar = icalendar.Calendar.from_ical(input)
-        output = to_standard(calendar).to_ical()
-        with open(sys.argv[2], 'wb') as out_file:
-            out_file.write(output)
+        in_file = open(sys.argv[1], 'rb')
+        out_file = open(sys.argv[2], 'wb')
     else:
         sys.stdout.write(main.__doc__)
+        return 0
+    input = in_file.read()
+    calendar = icalendar.Calendar.from_ical(input)
+    output = to_standard(calendar).to_ical()
+    out_file.write(output)
     return 0
