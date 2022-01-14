@@ -19,8 +19,6 @@ before_script:
   - pip list
   - echo "Package version $PACKAGE_VERSION with possible tag name $TAG_NAME"
 script:
-  # test the example script to test proper installation with all packages
-  - python example.py
   # install test environment after testing example
   - pip install -r test-requirements.txt
   - pytest --x-wr-timezone=all
