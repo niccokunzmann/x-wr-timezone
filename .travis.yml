@@ -34,11 +34,13 @@ deploy:
   # created with travis command line tool
   # https://docs.travis-ci.com/user/deployment/pypi
   # $ travis setup pypi
-#  provider: pypi
-#  user: niccokunzmann2
-#  password:
-#    secure: pEM3dshSbjGx7A+t3JisuzIhkGva0mPlZZYbZ1boNBU3Y2YiNYhhtkt8ilkGWxblmmZAq9r0UGLDY2fPlX73o6kwxIcQiwiLFFvZK+KcO7cOck35tnwWVepmMdi7x0qyjO13m1FbY1FnR9jNG7so+Pcmn1aey2XR/3Aroyx5PTDFx3SKsN8xwTtYs18Z8Huc99M7vUH9loOOsHXI0UZ5dUOk1XswDj+Zxm0stJeBqLAhMk2euh5ADBK8jNB+ZiNap8hxvKeYigB8jCP7c4YOev4nOYKAIsY15gOjBC7MSoH6668J7uiH1kgNDQyrtGHz46jKJRFke45tksefW4+gAOs8FdPVfTZR3GpnzfKxnu1yZdRktD1FOWcGZwzPpuXW9w2oGpcVt5Lh0rP7HhnK0ILnTPx7jD9c86gQiy5EhGKpgkbOsQTDIidzoVcrxDJdfS2oRyXPiHsobUNpzMTbGbnuwUKvisdHjPzhXt2/Rd/kB0Yd8KD+cdwyM6kX8ab4aevTCXWyp3hbFs+acxp0r3BZgF9T6fEWsv61ihxWV/eeWiQXmKJy1pOXEDaa/scmWDHRrxaJtXF5ASXcAIDw1pQWsqs66tcYcQC2GMsIRNpEH/TgaQ+Ozr/REWgJXNxA4NCOw7XPiDGN8pg4qjeC0zgauC8tjAaO6zQ8x85L/xU=
-#  on:
-#    tags: true
-#    repo: niccokunzmann/x-wr-timezone
-#    condition: $TRAVIS_PYTHON_VERSION == 3.9
+  provider: pypi
+  user: niccokunzmann2
+  password:
+    secure: Mw8rMWVfRsdC7nzJzQ+sCF57w3s3l6peA5Ec0tyfJASU6G88AK026Y3daSNiOrHvqVSfn2kS6Op+eYzQ/9vG5fvWsjCx3iWLAHYZ3DbGt3zeDTI/2FkJeBFRE8bTD+yiq1fIz/BumqxRlkUlalYB175XzV4QhxMZsRMy4wGjUffn8/XQ6fzEZo7IFrGtdl/U2F/8wowXQVpsRrM8xfsbGUETUWg4woEmeU0KUxxt62yOu2TRdtr1jXne2xGXrgUPTp/IjkK9x0KfwbfAHJy3Mk77M9zg1PKvV+tgrIF6nVArRTlR1yQ+8vjAsCc1s3aRaN75FFH60py1fTCEZccnYl8DIPw9hA2rFoS0F1zQcqsrXtTEloUgqB380QpShhJZaNcwGOXdqeoPp6Bs6FRuyHtmpUowplXYw/58uS1hzzaTML5jZcYB5ndeQ4Ha5WSJxJTPo5roj9JAgiNaxCzWz/F87oBG1BikG0fSmhrYWD7NRQ/o80nGvL8G7S0LnIdtftRu6+x0maJxqCgbwkxHxLl96qVQ8mppHLv5BJHR7sv9ALPByRR5Y5TODJpxidieosaawqHPA4XtOyxSJuWLsJvj11/EPBdtAQ9MP4NvbB/0packUAYH1DVQm+r4W0FISYC9lWs8Ix1NNt7qzMs5y5TI3fsiebmzDsjrLq21NTo=
+  on:
+    tags: true
+    distributions: sdist bdist_wheel
+    repo: niccokunzmann/x-wr-timezone
+    condition: $TRAVIS_PYTHON_VERSION == 3.9
+  skip_cleanup: 'true'
