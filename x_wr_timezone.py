@@ -117,5 +117,5 @@ def main():
         with open(sys.argv[2], 'wb') as out_file:
             out_file.write(output)
     else:
-        print(main.__doc__)
+        sys.stdout.write(main.__doc__)
     return 0
