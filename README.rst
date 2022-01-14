@@ -173,7 +173,7 @@ Related Software
 
 This module uses the ``icalendar`` library for parsing calendars.
 This library is used by ``python-recurring-ical-events``
-to get events at specific dates..
+to get events at specific dates.
 
 License
 -------
