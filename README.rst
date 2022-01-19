@@ -161,12 +161,14 @@ Changelog
 ---------
 - v0.0.1
     - Initial release supports DTSTART, DTEND, EXDATE, RDATE, RECURRENCE-ID attributes of events.
-    - Command line interface as `x-wr-timezone`.
+    - Command line interface as ``x-wr-timezone``.
 
 Related Work
 ------------
 
-TODO: Quote issues and blog posts.
+This module was reated beause of these issues:
+- `icalendar#343 <https://github.com/collective/icalendar/issues/343>`__
+- `python-recurring-ical-events#71 <https://github.com/niccokunzmann/python-recurring-ical-events/issues/71>`__
 
 Related Software
 ----------------
