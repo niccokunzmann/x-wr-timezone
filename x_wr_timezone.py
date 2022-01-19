@@ -127,7 +127,7 @@ def to_standard(calendar, timezone=None):
     """
     if timezone is None:
         timezone = calendar.get(X_WR_TIMEZONE, None)
-    if isinstance(timezone, str):
+    if timezone is not None and not isinstance(timezone, datetime.tzinfo):
         timezone = pytz.timezone(timezone)
     if timezone is not None:
         visitor = TimeZoneChangingVisitor(timezone)
