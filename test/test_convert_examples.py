@@ -1,5 +1,7 @@
 """This test converts example calendars"""
 import pytest
+import x_wr_timezone
+import pytz
 
 
 def assert_has_line(bytes, content, message):
@@ -72,3 +74,15 @@ def test_conversion_changes_the_time_zone(to_standard, calendars, calendar_name,
     new_calendar = to_standard(calendar.as_icalendar())
     output_bytes = new_calendar.to_ical()
     assert_has_line(output_bytes, content, message)
+
+
+@pytest.mark.parametrize("tz,line,message,calendar_name", [
+    ("Europe/Paris", ("DTSTART", "TZID=Europe/Paris" ,"20211223T030000"), "(1) Use string as timezone", "single-events-DTSTART-DTEND.in.ics"),
+    (pytz.timezone("Europe/Berlin"), ("DTSTART", "TZID=Europe/Berlin", "20211223T030000"), "(2) Use pytz.timezone as timezone", "single-events-DTSTART-DTEND.in.ics"),
+    (pytz.UTC, ("DTSTART", "20211222T170000Z"), "(3) Use pytz.UTC as timezone", "single-events-DTSTART-DTEND.in.ics"),
+])
+def test_timezone_parameter(calendars, tz, line, message, calendar_name):
+    calendar = calendars[calendar_name]
+    new_calendar = x_wr_timezone.to_standard(calendar.as_icalendar(), timezone=tz)
+    output_bytes = new_calendar.to_ical()
+    assert_has_line(output_bytes, line, message)

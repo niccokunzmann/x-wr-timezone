@@ -19,6 +19,12 @@ import icalendar
 
 X_WR_TIMEZONE = "X-WR-TIMEZONE"
 
+
+def list_is(l1, l2):
+    """Return wether all contents are identical."""
+    return len(l1) == len(l2) and all(e1 is e2 for e1, e2 in zip(l1, l2))
+
+
 class TimeZoneChangingVisitor:
     """This implements a visitor pattern working on an icalendar object."""
 
@@ -30,22 +36,49 @@ class TimeZoneChangingVisitor:
         """Initialize the visitor with the new time zone."""
         self.new_timezone = timezone
 
+    def copy_if_changed(self, component, attributes, subcomponents):
+        """Check if an icalendar Component has changed and copy it if it has.
+
+        atributes and subcomponents are put into the copy."""
+        for key, value in attributes.items():
+            if component[key] is not value:
+                return self.copy_component(component, attributes, subcomponents)
+        assert len(component.subcomponents) == len(subcomponents)
+        for new_subcomponent, old_subcomponent in zip(subcomponents, component.subcomponents):
+            if new_subcomponent is not old_subcomponent:
+                return self.copy_component(component, attributes, subcomponents)
+        return component
+
+    def copy_component(self, component, attributes, subcomponents):
+        """Create a copy of the component with attributes and subcomponents."""
+        component = component.copy()
+        for key, value in attributes.items():
+            component[key] = value
+        assert len(component.subcomponents) == 0
+        for subcomponent in subcomponents:
+             component.add_component(subcomponent)
+        return component
+
     def visit(self, calendar):
         """Visit a calendar and change it to the time zone."""
-        for event in calendar.walk():
-            if isinstance(event, icalendar.cal.Event):
-                self.visit_event(event)
+        subcomponents = []
+        for subcomponent in calendar.subcomponents:
+            if isinstance(subcomponent, icalendar.cal.Event):
+                subcomponent = self.visit_event(subcomponent)
+            subcomponents.append(subcomponent)
+        return self.copy_if_changed(calendar, {}, subcomponents)
 
     def visit_event(self, event):
-        for attribute in self.VALUE_ATTRIBUTES:
-            value = event.get(attribute)
+        attributes = {}
+        for name in self.VALUE_ATTRIBUTES:
+            value = event.get(name)
             if value is not None:
-                event[attribute] = self.visit_value(value)
+                attributes[name] = self.visit_value(value)
+        return self.copy_if_changed(event, attributes, event.subcomponents)
 
     def visit_value_default(self, value):
         """Default method for visiting a value type."""
         return value
-
 
     def visit_value(self, value):
         """Visit a value type."""
@@ -55,15 +88,23 @@ class TimeZoneChangingVisitor:
 
     def visit_value_list(self, l):
         """Visit a list of values."""
-        return list(map(self.visit_value, l))
+        v = list(map(self.visit_value, l))
+        if list_is(v, l):
+            return l
+        return v
 
     def visit_value_vDDDLists(self, l):
-        dts = [self.visit_value(ddd.dt) for ddd in l.dts]
-        return vDDDLists(dts)
+        dts = [ddd.dt for ddd in l.dts]
+        new_dts = [self.visit_value(dt) for dt in dts]
+        if list_is(new_dts, dts):
+            return l
+        return vDDDLists(new_dts)
 
     def visit_value_vDDDTypes(self, value):
         """Visit an icalendar value type"""
         dt = self.visit_value(value.dt)
+        if dt is value.dt:
+            return value
         return vDDDTypes(dt)
 
     def visit_value_datetime(self, dt):
@@ -72,13 +113,25 @@ class TimeZoneChangingVisitor:
             return dt.astimezone(self.new_timezone)
         return dt
 
-def to_standard(calendar):
-    """Make a calendar that might use X-WR-TIMEZONE compatible with RFC 5545."""
-    x_wr_timezone = calendar.get(X_WR_TIMEZONE, None)
-    if x_wr_timezone is not None:
-        new_timezone = pytz.timezone(x_wr_timezone)
-        visitor = TimeZoneChangingVisitor(new_timezone)
-        visitor.visit(calendar)
+def to_standard(calendar, timezone=None):
+    """Make a calendar that might use X-WR-TIMEZONE compatible with RFC 5545.
+
+    Arguments:
+    - calendar is an icalendar.Calendar object. It does not need to have
+        the X-WR-TIMEZONE property but if it has, calendar  will be converted
+        to conform to RFC 5545.
+    - timezone is an optional timezone argument if you want to override the
+        existence of the actual X-WR-TIMEZONE property of the calendar.
+        This can be a string like "Europe/Berlin" or "UTC" or a
+        pytz.timezone or any other timezone accepted by the datetime module.
+    """
+    if timezone is None:
+        timezone = calendar.get(X_WR_TIMEZONE, None)
+    if timezone is not None and not isinstance(timezone, datetime.tzinfo):
+        timezone = pytz.timezone(timezone)
+    if timezone is not None:
+        visitor = TimeZoneChangingVisitor(timezone)
+        return visitor.visit(calendar)
     return calendar
 
 def main():

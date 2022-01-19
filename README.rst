@@ -91,7 +91,7 @@ Here is a full example which does about as much as this module is supposed to do
         file.write(new_calendar.to_ical())
 
 
-``to_standard(calendar, timezone=None, in_place=False)`` has these parameters:
+``to_standard(calendar, timezone=None)`` has these parameters:
 
 - ``calendar`` is the ``icalendar`` calendar object.
 - ``timezone`` is an optional time zone. By default, the time zone in 
@@ -102,10 +102,15 @@ Here is a full example which does about as much as this module is supposed to do
     changed as if ``calendar['X-WR-TIMEZONE']`` had the value of ``timezone``.
     This does not add or change the value of ``calendar['X-WR-TIMEZONE']``.
     You would need to do that yourself.
-- ``in_place`` is set to ``False`` by default so that a changed copy
-    of the ``calendar`` argument is returned.
-    Set ``in_place=True`` to have the ``calendar`` argument be changed and
-    returned.
+    ``timezone`` can be a string like ``"UTC"`` or ``"Europe/Berlin"`` or
+    a ``pytz.timezone`` or something that ``datetime`` accepts as a time zone..
+- Return value: The ``calendar`` argument is not modified at all. The calendar
+    returned has the attributes and subcomponents of the ``calendar`` only
+    changed and copied where needed to return the proper value. As such,
+    the returned calendar might be identical to the one passed to the
+    function as the ``calendar`` argument. Keep that in mind if you modify the
+    return value.
+
 
 Development
 -----------
