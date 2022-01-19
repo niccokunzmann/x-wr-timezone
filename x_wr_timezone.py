@@ -32,8 +32,9 @@ class TimeZoneChangingVisitor:
 
     def visit(self, calendar):
         """Visit a calendar and change it to the time zone."""
-        for event in calendar.walk('VEVENT'):
-            self.visit_event(event)
+        for event in calendar.walk():
+            if isinstance(event, icalendar.cal.Event):
+                self.visit_event(event)
 
     def visit_event(self, event):
         for attribute in self.VALUE_ATTRIBUTES:
