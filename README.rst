@@ -102,6 +102,8 @@ Here is a full example which does about as much as this module is supposed to do
     changed as if ``calendar['X-WR-TIMEZONE']`` had the value of ``timezone``.
     This does not add or change the value of ``calendar['X-WR-TIMEZONE']``.
     You would need to do that yourself.
+    ``timezone`` can be a string like ``"UTC"`` or ``"Europe/Berlin"`` or
+    a ``pytz.timezone`` or something that ``datetime`` accepts as a time zone..
 - ``in_place`` is set to ``False`` by default so that a changed copy
     of the ``calendar`` argument is returned.
     Set ``in_place=True`` to have the ``calendar`` argument be changed and
