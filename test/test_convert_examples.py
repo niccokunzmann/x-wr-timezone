@@ -77,9 +77,9 @@ def test_conversion_changes_the_time_zone(to_standard, calendars, calendar_name,
 
 
 @pytest.mark.parametrize("tz,line,message,calendar_name", [
-    ("Europe/Berlin", ("DTSTART", "asd"), "(1) Use string as timezone", "single-events-DTSTART-DTEND.in.ics"),
-    (pytz.timezone("Europe/Berlin"), ("DTSTART", "asd"), "(2) Use pytz.timezone as timezone", "single-events-DTSTART-DTEND.in.ics"),
-    (pytz.UTC, ("DTSTART", "asd"), "(3) Use pytz.UTC as timezone", "single-events-DTSTART-DTEND.in.ics"),
+    ("Europe/Paris", ("DTSTART", "TZID=Europe/Paris" ,"20211223T030000"), "(1) Use string as timezone", "single-events-DTSTART-DTEND.in.ics"),
+    (pytz.timezone("Europe/Berlin"), ("DTSTART", "TZID=Europe/Berlin", "20211223T030000"), "(2) Use pytz.timezone as timezone", "single-events-DTSTART-DTEND.in.ics"),
+    (pytz.UTC, ("DTSTART", "20211222T170000Z"), "(3) Use pytz.UTC as timezone", "single-events-DTSTART-DTEND.in.ics"),
 ])
 def test_timezone_parameter(calendars, tz, line, message, calendar_name):
     calendar = calendars[calendar_name]

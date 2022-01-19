@@ -71,12 +71,24 @@ class TimeZoneChangingVisitor:
             return dt.astimezone(self.new_timezone)
         return dt
 
-def to_standard(calendar):
-    """Make a calendar that might use X-WR-TIMEZONE compatible with RFC 5545."""
-    x_wr_timezone = calendar.get(X_WR_TIMEZONE, None)
-    if x_wr_timezone is not None:
-        new_timezone = pytz.timezone(x_wr_timezone)
-        visitor = TimeZoneChangingVisitor(new_timezone)
+def to_standard(calendar, timezone=None):
+    """Make a calendar that might use X-WR-TIMEZONE compatible with RFC 5545.
+
+    Arguments:
+    - calendar is an icalendar.Calendar object. It does not need to have
+        the X-WR-TIMEZONE property but if it has, calendar  will be converted
+        to conform to RFC 5545.
+    - timezone is an optional timezone argument if you want to override the
+        existence of the actual X-WR-TIMEZONE property of the calendar.
+        This can be a string like "Europe/Berlin" or "UTC" or a
+        pytz.timezone or any other timezone accepted by the datetime module.
+    """
+    if timezone is None:
+        timezone = calendar.get(X_WR_TIMEZONE, None)
+    if isinstance(timezone, str):
+        timezone = pytz.timezone(timezone)
+    if timezone is not None:
+        visitor = TimeZoneChangingVisitor(timezone)
         visitor.visit(calendar)
     return calendar
 
