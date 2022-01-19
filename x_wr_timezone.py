@@ -57,7 +57,6 @@ class TimeZoneChangingVisitor:
         assert len(component.subcomponents) == 0
         for subcomponent in subcomponents:
              component.add_component(subcomponent)
-        print("copy", component)
         return component
 
     def visit(self, calendar):
@@ -92,7 +91,6 @@ class TimeZoneChangingVisitor:
         v = list(map(self.visit_value, l))
         if list_is(v, l):
             return l
-        print("copy list")
         return v
 
     def visit_value_vDDDLists(self, l):
@@ -100,7 +98,6 @@ class TimeZoneChangingVisitor:
         new_dts = [self.visit_value(dt) for dt in dts]
         if list_is(new_dts, dts):
             return l
-        print("copy vDDDLists")
         return vDDDLists(new_dts)
 
     def visit_value_vDDDTypes(self, value):
@@ -108,13 +105,11 @@ class TimeZoneChangingVisitor:
         dt = self.visit_value(value.dt)
         if dt is value.dt:
             return value
-        print("copy vDDDTypes")
         return vDDDTypes(dt)
 
     def visit_value_datetime(self, dt):
         """Visit a datetime.datetime object."""
         if dt.tzinfo == self.old_timezone:
-            print("copy dt")
             return dt.astimezone(self.new_timezone)
         return dt
 
