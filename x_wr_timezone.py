@@ -21,20 +21,17 @@ X_WR_TIMEZONE = "X-WR-TIMEZONE"
 
 
 def list_is(l1, l2):
-    """Return wether all contents are identical."""
+    """Return wether all contents of two lists are identical."""
     return len(l1) == len(l2) and all(e1 is e2 for e1, e2 in zip(l1, l2))
 
 
-class TimeZoneChangingVisitor:
-    """This implements a visitor pattern working on an icalendar object."""
+class CalendarWalker:
+    """I walk along the components and values of an icalendar object.
+
+    The idea is the same as a visitor pattern.
+    """
 
     VALUE_ATTRIBUTES = ['DTSTART', 'DTEND', 'RDATE', 'RECURRENCE-ID', 'EXDATE']
-
-    old_timezone = pytz.UTC
-
-    def __init__(self, timezone):
-        """Initialize the visitor with the new time zone."""
-        self.new_timezone = timezone
 
     def copy_if_changed(self, component, attributes, subcomponents):
         """Check if an icalendar Component has changed and copy it if it has.
@@ -59,59 +56,77 @@ class TimeZoneChangingVisitor:
              component.add_component(subcomponent)
         return component
 
-    def visit(self, calendar):
-        """Visit a calendar and change it to the time zone."""
+    def walk(self, calendar):
+        """Walk along the calendar and return the changed or identical object."""
         subcomponents = []
         for subcomponent in calendar.subcomponents:
             if isinstance(subcomponent, icalendar.cal.Event):
-                subcomponent = self.visit_event(subcomponent)
+                subcomponent = self.walk_event(subcomponent)
             subcomponents.append(subcomponent)
         return self.copy_if_changed(calendar, {}, subcomponents)
 
-    def visit_event(self, event):
+    def walk_event(self, event):
+        """Walk along the event and return the changed or identical object."""
         attributes = {}
         for name in self.VALUE_ATTRIBUTES:
             value = event.get(name)
             if value is not None:
-                attributes[name] = self.visit_value(value)
+                attributes[name] = self.walk_value(value)
         return self.copy_if_changed(event, attributes, event.subcomponents)
 
-    def visit_value_default(self, value):
-        """Default method for visiting a value type."""
+    def walk_value_default(self, value):
+        """Default method for walking along a value type."""
         return value
 
-    def visit_value(self, value):
-        """Visit a value type."""
-        name = "visit_value_" + type(value).__name__
-        visit = getattr(self, name, self.visit_value_default)
-        return visit(value)
+    def walk_value(self, value):
+        """Walk along a value type."""
+        name = "walk_value_" + type(value).__name__
+        walk = getattr(self, name, self.walk_value_default)
+        return walk(value)
 
-    def visit_value_list(self, l):
-        """Visit a list of values."""
-        v = list(map(self.visit_value, l))
+    def walk_value_list(self, l):
+        """Walk through a list of values."""
+        v = list(map(self.walk_value, l))
         if list_is(v, l):
             return l
         return v
 
-    def visit_value_vDDDLists(self, l):
+    def walk_value_vDDDLists(self, l):
         dts = [ddd.dt for ddd in l.dts]
-        new_dts = [self.visit_value(dt) for dt in dts]
+        new_dts = [self.walk_value(dt) for dt in dts]
         if list_is(new_dts, dts):
             return l
         return vDDDLists(new_dts)
 
-    def visit_value_vDDDTypes(self, value):
-        """Visit an icalendar value type"""
-        dt = self.visit_value(value.dt)
+    def walk_value_vDDDTypes(self, value):
+        """Walk along an icalendar value type"""
+        dt = self.walk_value(value.dt)
         if dt is value.dt:
             return value
         return vDDDTypes(dt)
 
-    def visit_value_datetime(self, dt):
-        """Visit a datetime.datetime object."""
-        if dt.tzinfo == self.old_timezone:
+    def walk_value_datetime(self, dt):
+        """Walk along a datetime.datetime object."""
+        return dt
+
+    def is_UTC(self, dt):
+        """Return whether the time zone is a UTC time zone."""
+        return dt.tzname().upper() == "UTC"
+
+
+class UTCChangingWalker(CalendarWalker):
+    """Changes the UTC time zone into a new time zone."""
+
+    def __init__(self, timezone):
+        """Initialize the walker with the new time zone."""
+        self.new_timezone = timezone
+
+    def walk_value_datetime(self, dt):
+        """Walk along a datetime.datetime object."""
+        if self.is_UTC(dt):
             return dt.astimezone(self.new_timezone)
         return dt
+
 
 def to_standard(calendar, timezone=None):
     """Make a calendar that might use X-WR-TIMEZONE compatible with RFC 5545.
@@ -130,8 +145,8 @@ def to_standard(calendar, timezone=None):
     if timezone is not None and not isinstance(timezone, datetime.tzinfo):
         timezone = pytz.timezone(timezone)
     if timezone is not None:
-        visitor = TimeZoneChangingVisitor(timezone)
-        return visitor.visit(calendar)
+        walker = UTCChangingWalker(timezone)
+        return walker.walk(calendar)
     return calendar
 
 def main():
@@ -151,7 +166,7 @@ def main():
 
         x-wr-timezone --help
 
-    For bug reports, code and questions, visit the projet page:
+    For bug reports, code and questions, fvisit the projet page:
 
         https://github.com/niccokunzmann/x-wr-timezone
 
@@ -171,3 +186,9 @@ def main():
     output = to_standard(calendar).to_ical()
     out_file.write(output)
     return 0
+
+
+__all__ = [
+    "main", "to_standard", "UTCChangingWalker", "list_is",
+    "X_WR_TIMEZONE", "CalendarWalker"
+]
