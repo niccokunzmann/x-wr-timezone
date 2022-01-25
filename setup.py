@@ -11,7 +11,7 @@ PACKAGE_NAME = "x_wr_timezone"
 HERE = os.path.abspath(os.path.dirname(__file__))
 sys.path.insert(0, HERE)  # for package import
 
-__version__ = "0.0.2"
+__version__ = "0.0.3"
 __author__ = 'Nicco Kunzmann'
 
 

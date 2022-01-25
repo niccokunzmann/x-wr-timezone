@@ -165,6 +165,9 @@ how to go about it.
 Changelog
 ---------
 
+- v0.0.3
+    - Use ``tzname()`` function of ``datetime`` to test for UTC. This helps support zoneinfo time zones.
+    - Split up visitor class and rename it to walker.
 - v0.0.2
     - Implement the ``timezone`` argument.
     - Do not modify the value of the``calendar`` argument. 
