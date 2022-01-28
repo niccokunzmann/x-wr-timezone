@@ -80,7 +80,7 @@ Here is a full example which does about as much as this module is supposed to do
 
 .. code-block:: python
 
-    import icalendar # installed wih x_wr_timezone
+    import icalendar # installed with x_wr_timezone
     import x_wr_timezone
 
     with open("in.ics", 'rb') as file:
