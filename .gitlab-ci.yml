@@ -43,6 +43,8 @@ build-package:
     untracked: true
 
 .run-tests:
+  needs:
+    - build-package
   stage: test
   before_script:
     - pip install --user --upgrade pip
