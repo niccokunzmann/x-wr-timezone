@@ -33,8 +33,9 @@ build-package:
     - python --version  # For debugging
     # install from the zip file to see if files were forgotten
     - python setup.py sdist --dist-dir=dist --formats=zip
+    - pip install --user --upgrade pip
     # download packages once and cache them for the others
-    - pip download -r test-requirements.txt -r requirements.txt virtualenv wheel
+    - pip install --user -r test-requirements.txt -r requirements.txt virtualenv wheel
   artifacts:
     paths:
       - sdist
@@ -46,7 +47,7 @@ build-package:
     # install the package in a virtual env
     - pip install --user virtualenv
     - virtualenv ENV
-    - ENV/bin/activate
+    - source ENV/bin/activate
     # install package from build step
     - pip install dist/*.zip
     # test that the example works without the test dependencies
