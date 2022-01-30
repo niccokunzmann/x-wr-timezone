@@ -1,9 +1,9 @@
 X-WR-TIMEZONE
 =============
 
-.. image:: https://app.travis-ci.com/niccokunzmann/x-wr-timezone.svg?branch=master
-   :target: https://app.travis-ci.com/github/niccokunzmann/x-wr-timezone
-   :alt: Travis Build and Tests Status
+.. image:: https://img.shields.io/gitlab/pipeline-status/niccokunzmann/x-wr-timezone?branch=master
+   :target: https://gitlab.com/niccokunzmann/x-wr-timezone/-/jobs
+   :alt: Gitlab CI build and test status
 
 .. image:: https://badge.fury.io/py/x-wr-timezone.svg
    :target: https://pypi.python.org/pypi/x-wr-timezone
