@@ -12,7 +12,6 @@ variables:
   # Change pip's cache directory to be inside the project directory since we can
   # only cache local items.
   PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
-  PATH: "$PATH:/root/.local/bin"
 
 # Pip's cache doesn't store the python packages
 # https://pip.pypa.io/en/stable/reference/pip_install/#caching
@@ -31,6 +30,7 @@ stages:
 build-package:
   stage: build
   script:
+    - 'export PATH="$PATH:/root/.local/bin"'
     - python --version  # For debugging
     # install from the zip file to see if files were forgotten
     - python setup.py sdist --dist-dir=dist --formats=zip
@@ -47,6 +47,7 @@ build-package:
     - build-package
   stage: test
   before_script:
+    - 'export PATH="$PATH:/root/.local/bin"'
     - pip install --user --upgrade pip
     # install the package in a virtual env
     - pip install --user virtualenv
@@ -90,7 +91,9 @@ test-python-3.10:
 deploy-package:
   stage: deploy
   before_script:
-  - pip install --user wheel
+    - 'export PATH="$PATH:/root/.local/bin"'
+    - pip install --user --upgrade pip
+    - pip install --user wheel
   script:
     - python setup.py bdist_wheel sdist
   artifacts:
