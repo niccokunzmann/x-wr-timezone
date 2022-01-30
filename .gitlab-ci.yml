@@ -45,6 +45,7 @@ build-package:
 .run-tests:
   stage: test
   before_script:
+    - pip install --user --upgrade pip
     # install the package in a virtual env
     - pip install --user virtualenv
     - virtualenv ENV
