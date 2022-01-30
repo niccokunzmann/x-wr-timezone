@@ -21,38 +21,76 @@ variables:
 cache:
   paths:
     - .cache/pip
-    - venv/
+    - dist
 
-before_script:
-  - python --version  # For debugging
-  - pip install virtualenv
-  - virtualenv venv
-  - source venv/bin/activate
+stages:
+  - build
+  - test
+  - deploy
 
-test:
+build-package:
+  stage: build
   script:
-    - python setup.py test
-    - pip install tox flake8  # you can also use tox
-    - tox -e py36,flake8
-
-run:
-  script:
-    - python setup.py bdist_wheel
-    # an alternative approach is to install and run:
-    - pip install dist/*
-    # run the command here
+    - python --version  # For debugging
+    # install from the zip file to see if files were forgotten
+    - python setup.py sdist --dist-dir=dist --formats=zip
+    # download packages once and cache them for the others
+    - pip download -r test-requirements.txt -r requirements.txt virtualenv wheel
   artifacts:
     paths:
-      - dist/*.whl
+      - sdist
+    untracked: true
 
-pages:
+.run-tests:
+  before_script:
+    # install the package in a virtual env
+    - pip install --user virtualenv
+    - virtualenv ENV
+    - ENV/bin/activate
+    # install package from build step
+    - pip install dist/*.zip
+    # test that the example works without the test dependencies
+    - python example.py
+    # install test requirements
+    - pip install -r test-requirements.txt
   script:
-    - pip install sphinx sphinx-rtd-theme
-    - cd doc ; make html
-    - mv build/html/ ../public/
+    - test/test_code_quality.sh
+    - pytest --x-wr-timezone=all
+
+test-python-2.7:
+  image: python:2.7
+  extends:
+  - .run-tests
+
+test-python-3.7:
+  image: python:3.7
+  extends:
+  - .run-tests
+
+test-python-3.8:
+  image: python:3.8
+  extends:
+  - .run-tests
+
+test-python-3.9:
+  image: python:3.9
+  extends:
+  - .run-tests
+
+test-python-3.10:
+  image: python:3.10
+  extends:
+  - .run-tests
+
+deploy-package:
+  stage: deploy
+  before_script:
+  - pip install --user wheel
+  script:
+    - python setup.py bdist_wheel sdist
   artifacts:
     paths:
-      - public
+      - dist/*
   rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    - if: '"$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH"'
 
