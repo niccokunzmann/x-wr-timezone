@@ -90,6 +90,12 @@ test-python-3.10:
 
 deploy-package:
   stage: deploy
+  needs:
+    - test-python-2.7
+    - test-python-3.7
+    - test-python-3.8
+    - test-python-3.9
+    - test-python-3.10
   before_script:
     - 'export PATH="$PATH:/root/.local/bin"'
     - pip install --user --upgrade pip
@@ -99,6 +105,6 @@ deploy-package:
   artifacts:
     paths:
       - dist/*
-  rules:
-    - if: '"$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH"'
+#  rules:
+#    - if: '"$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH"'
 
