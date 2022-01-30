@@ -21,7 +21,6 @@ variables:
 cache:
   paths:
     - .cache/pip
-    - dist
 
 stages:
   - build
