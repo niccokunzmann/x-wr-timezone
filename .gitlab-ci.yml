@@ -41,6 +41,7 @@ build-package:
     untracked: true
 
 .run-tests:
+  stage: test
   before_script:
     # install the package in a virtual env
     - pip install --user virtualenv
