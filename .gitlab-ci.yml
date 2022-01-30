@@ -51,7 +51,7 @@ build-package:
     # install package from build step
     - pip install dist/*.zip
     # test that the example works without the test dependencies
-    - python example.py
+    - ./example.sh
     # install test requirements
     - pip install -r test-requirements.txt
   script:
