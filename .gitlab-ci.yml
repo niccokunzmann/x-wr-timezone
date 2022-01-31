@@ -99,12 +99,29 @@ deploy-package:
   before_script:
     - 'export PATH="$PATH:/root/.local/bin"'
     - pip install --user --upgrade pip
-    - pip install --user wheel
+    - pip install --user wheel twine
   script:
+    - PACKAGE_VERSION=`python setup.py --version`
+    - TAG_NAME=v$PACKAGE_VERSION
+    - echo "Package version $PACKAGE_VERSION with possible tag name $TAG_NAME"
+    # test that the tag represents the version
+    # see https://docs.gitlab.com/ee/ci/variables/predefined_variables.html
+    - ( if [ -n "$CI_COMMIT_TAG" ]; then if [ $TAG_NAME != $CI_COMMIT_TAG ]; then echo "This tag is for the wrong version. Got \"$CI_COMMIT_TAG\" expected \"$TAG_NAME\"."; exit 1; fi; fi; )
+    # remove old files
+    - rm -rf dist/*
+    # build new files
     - python setup.py bdist_wheel sdist
+    # You will have to set the variables TWINE_USERNAME and TWINE_PASSWORD
+    # You can use a token specific to your project by setting the user name to 
+    # __token__ and the password to the token given to you by the PyPI project.
+    # sources:
+    #   - https://shambu2k.hashnode.dev/gitlab-to-pypi
+    #   - http://blog.octomy.org/2020/11/deploying-python-pacakges-to-pypi-using.html?m=1
+    - twine check dist/*
+    - twine upload dist/*
   artifacts:
     paths:
       - dist/*
-#  rules:
-#    - if: '"$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH"'
+  rules:
+    - if: '"$CI_COMMIT_TAG" != ""'
 
