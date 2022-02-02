@@ -103,6 +103,7 @@ deploy-package:
     - pip install --user --upgrade pip
     # add piwheels so we can build on raspberry pi
     - pip config set global.extra-index-url 'https://www.piwheels.org/simple'
+    - pip config list
     - pip install --user wheel twine
   script:
     - PACKAGE_VERSION=`python setup.py --version`
