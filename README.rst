@@ -173,8 +173,11 @@ how to go about it.
 
 Changelog
 ---------
+
+- v0.0.5
+    - Revisit README and CLI and fix spelling mistakes.
 - v0.0.4
-    - test automatic deployment
+    - Test automatic deployment with Gitlab CI.
 - v0.0.3
     - Use ``tzname()`` function of ``datetime`` to test for UTC. This helps support zoneinfo time zones.
     - Split up visitor class and rename it to walker.
