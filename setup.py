@@ -66,12 +66,12 @@ for ending in DEVELOPMENT_STATES:
 if not __version__[-1:].isdigit():
     METADATA["version"] += "0"
 
-# tag and upload to github to autodeploy with travis
+# tag and upload to repository to trigger auto deploy for tags
 
 class TagAndDeployCommand(Command):
 
     description = "Create a git tag for this version and push it to origin."\
-                  "To trigger a travis-ci build and and deploy."
+                  "To trigger a CI build and and deploy."
     user_options = []
     name = "tag_and_deploy"
     remote = "origin"
