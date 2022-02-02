@@ -166,7 +166,7 @@ def main():
 
         x-wr-timezone --help
 
-    For bug reports, code and questions, fvisit the projet page:
+    For bug reports, code and questions, visit the projet page:
 
         https://github.com/niccokunzmann/x-wr-timezone
 
