@@ -102,7 +102,7 @@ deploy-package:
     - 'export PATH="$PATH:/root/.local/bin"'
     - pip install --user --upgrade pip
     # add piwheels so we can build on raspberry pi
-    - pip config set user.extra-index-url 'https://www.piwheels.org/simple'
+    - pip config set global.extra-index-url 'https://www.piwheels.org/simple'
     - pip install --user wheel twine
   script:
     - PACKAGE_VERSION=`python setup.py --version`
