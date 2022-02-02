@@ -30,7 +30,7 @@ Some features of the module are:
 
 - Easy install with Python's ``pip``.
 - Command line conversion of calendars.
-- Piping of calendar files with ``wget`` of ``curl``.
+- Piping of calendar files with ``wget`` or ``curl``.
 
 Some of the requirements are:
 
@@ -51,7 +51,7 @@ Command Line Usage
 
 You can standardize the calendars using your command line interface.
 The examples assume that ``in.ics`` is a calendar which may use
-``X-WR-TIMEZONE``. whereas ``out.ics`` does not require ``X-WR-TIMEZONE``
+``X-WR-TIMEZONE``, whereas ``out.ics`` does not require ``X-WR-TIMEZONE``
 for proper display.
 
 .. code-block:: shell
@@ -60,6 +60,12 @@ for proper display.
     x-wr-timezone in.ics out.ics
     curl https://example.org/in.ics | x-wr-timezone > out.ics
     wget -O- https://example.org/in.ics | x-wr-timezone > out.ics
+
+You can get usage help on the command line:
+
+.. code-block:: shell
+
+    x-wr-timezone --help
 
 Python
 ------
@@ -93,7 +99,7 @@ Here is a full example which does about as much as this module is supposed to do
 
 ``to_standard(calendar, timezone=None)`` has these parameters:
 
-- ``calendar`` is the ``icalendar`` calendar object.
+- ``calendar`` is the ``icalendar.Calendar`` object.
 - ``timezone`` is an optional time zone. By default, the time zone in 
     ``calendar['X-WR-TIMEZONE']`` is used to check if the calendar needs
     changing.
@@ -116,16 +122,19 @@ Development
 -----------
 
 1. Clone the `repository <https://github.com/niccokunzmann/x-wr-timezone>`_ or its fork and ``cd x-wr-timezone``.
-2. Optional: Install virtualenv and Python3 and create a virtual environment.
+2. Optional: Install virtualenv and Python3 and create a virtual environment:
     .. code-block:: shell
 
+        pip install virtualenv
         virtualenv -p python3 ENV
-        source ENV/bin/activate
-3. Install the packages.
+        source ENV/bin/activate # you need to do this for each shell
+
+3. Install the packages and this module so it can be edited:
     .. code-block:: shell
 
         pip install -r test-requirements.txt -e .
-4. Run the tests
+
+4. Run the tests:
     .. code-block:: shell
 
         pytest
@@ -138,7 +147,7 @@ To release new versions,
 1. edit the Changelog Section
 2. edit setup.py, the ``__version__`` variable
 3. create a commit and push it
-4. Wait for `Travis <https://app.travis-ci.com/github/niccokunzmann/x-wr-timezone>`_ to finish the build.
+4. Wait for `CI tests <https://gitlab.com/niccokunzmann/x-wr-timezone/-/jobs>`_ to finish the build.
 5. run
     .. code-block:: shell
 
@@ -165,13 +174,13 @@ how to go about it.
 Changelog
 ---------
 - v0.0.4
-    - test automatic delployment
+    - test automatic deployment
 - v0.0.3
     - Use ``tzname()`` function of ``datetime`` to test for UTC. This helps support zoneinfo time zones.
     - Split up visitor class and rename it to walker.
 - v0.0.2
     - Implement the ``timezone`` argument.
-    - Do not modify the value of the``calendar`` argument. 
+    - Do not modify the value of the ``calendar`` argument and only copy it where needed. 
 - v0.0.1
     - Initial release supports DTSTART, DTEND, EXDATE, RDATE, RECURRENCE-ID attributes of events.
     - Command line interface as ``x-wr-timezone``.
@@ -180,6 +189,7 @@ Related Work
 ------------
 
 This module was reated beause of these issues:
+
 - `icalendar#343 <https://github.com/collective/icalendar/issues/343>`__
 - `python-recurring-ical-events#71 <https://github.com/niccokunzmann/python-recurring-ical-events/issues/71>`__
 
