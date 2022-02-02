@@ -89,6 +89,8 @@ test-python-3.10:
   - .run-tests
 
 deploy-package:
+  # use python3.9 because piwheels.org build for this version
+  image: python:3.9
   stage: deploy
   needs:
     - test-python-2.7
@@ -99,6 +101,8 @@ deploy-package:
   before_script:
     - 'export PATH="$PATH:/root/.local/bin"'
     - pip install --user --upgrade pip
+    # add piwheels so we can build on raspberry pi
+    - pip config set extra-index-url 'https://www.piwheels.org/simple'
     - pip install --user wheel twine
   script:
     - PACKAGE_VERSION=`python setup.py --version`
