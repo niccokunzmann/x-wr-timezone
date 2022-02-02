@@ -58,10 +58,19 @@ build-package:
     # test that the example works without the test dependencies
     - ./example.sh
     # install test requirements
-    - pip install -r test-requirements.txt
+    - pip install -r test-requirements.txt pytest-cov
   script:
     - test/test_code_quality.sh
-    - pytest --x-wr-timezone=all
+    # using coverage see
+    # - https://docs.gitlab.com/ee/user/project/merge_requests/test_coverage_visualization.html#python-example
+    # - https://gitlab.com/gitlab-org/gitlab/-/issues/285086
+    - coverage run -m pytest --x-wr-timezone=all
+    - coverage report
+    - coverage xml
+  artifacts:
+    reports:
+      cobertura: coverage.xml
+
 
 test-python-2.7:
   image: python:2.7
