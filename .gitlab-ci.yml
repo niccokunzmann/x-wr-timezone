@@ -63,27 +63,27 @@ build-package:
     - test/test_code_quality.sh
     - pytest --x-wr-timezone=all
 
-test-python-2.7:
+.test-python-2.7:
   image: python:2.7
   extends:
   - .run-tests
 
-test-python-3.7:
+.test-python-3.7:
   image: python:3.7
   extends:
   - .run-tests
 
-test-python-3.8:
+.test-python-3.8:
   image: python:3.8
   extends:
   - .run-tests
 
-test-python-3.9:
+.test-python-3.9:
   image: python:3.9
   extends:
   - .run-tests
 
-test-python-3.10:
+.test-python-3.10:
   image: python:3.10
   extends:
   - .run-tests
@@ -92,12 +92,12 @@ deploy-package:
   # use python3.9 because piwheels.org build for this version
   image: python:3.9
   stage: deploy
-  needs:
-    - test-python-2.7
-    - test-python-3.7
-    - test-python-3.8
-    - test-python-3.9
-    - test-python-3.10
+#  needs:
+#    - test-python-2.7
+#    - test-python-3.7
+#    - test-python-3.8
+#    - test-python-3.9
+#    - test-python-3.10
   before_script:
     - 'export PATH="$PATH:/root/.local/bin"'
     - pip install --user --upgrade pip
