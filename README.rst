@@ -164,7 +164,8 @@ how to go about it.
 
 Changelog
 ---------
-
+- v0.0.4
+    - test automatic delployment
 - v0.0.3
     - Use ``tzname()`` function of ``datetime`` to test for UTC. This helps support zoneinfo time zones.
     - Split up visitor class and rename it to walker.
