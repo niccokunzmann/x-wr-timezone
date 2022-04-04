@@ -176,7 +176,7 @@ Changelog
 
 - v0.0.5
     - Revisit README and CLI and fix spelling mistakes.
-    - Modified behavior to treat "floating" events found in a calendar, see `Pull Request 7<https:://github.com/niccokunzmann/x-wr-timezone/pull/7>`__
+    - Modified behavior to treat events without time zone found in a calendar using the X-WR-TIMEZONE property, see `Pull Request 7 <https://github.com/niccokunzmann/x-wr-timezone/pull/7>`__
 - v0.0.4
     - Test automatic deployment with Gitlab CI.
 - v0.0.3
