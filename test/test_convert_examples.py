@@ -76,6 +76,19 @@ def test_conversion_changes_the_time_zone(to_standard, calendars, calendar_name,
     assert_has_line(output_bytes, content, message)
 
 
+@pytest.mark.parametrize("calendar_name,content,message", [
+    ("single-event-no-tz.in.ics", ("DTSTART", "TZID=Europe/Brussels", ":20210916T210000"), "DTSTART should be updated."),
+    ("single-event-no-tz.in.ics", ("DTEND", "TZID=Europe/Brussels", ":20210916T224500"), "DTEND should be updated."),
+    ("single-event-no-tz.out.ics", ("DTSTART", "TZID=Europe/Brussels", ":20210916T210000"), "DTSTART stays the same in already converted calendar."),
+])
+def test_conversion_adds_the_time_zone(to_standard, calendars, calendar_name, content, message):
+    calendar = calendars[calendar_name]
+    new_calendar = to_standard(calendar.as_icalendar())
+    output_bytes = new_calendar.to_ical()
+    print(output_bytes)
+    assert_has_line(output_bytes, content, message)
+
+
 @pytest.mark.parametrize("tz,line,message,calendar_name", [
     ("Europe/Paris", ("DTSTART", "TZID=Europe/Paris" ,"20211223T030000"), "(1) Use string as timezone", "single-events-DTSTART-DTEND.in.ics"),
     (pytz.timezone("Europe/Berlin"), ("DTSTART", "TZID=Europe/Berlin", "20211223T030000"), "(2) Use pytz.timezone as timezone", "single-events-DTSTART-DTEND.in.ics"),
