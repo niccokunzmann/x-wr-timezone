@@ -111,7 +111,12 @@ class CalendarWalker:
 
     def is_UTC(self, dt):
         """Return whether the time zone is a UTC time zone."""
+        if dt.tzname() is None:
+            return False
         return dt.tzname().upper() == "UTC"
+
+    def is_Floating(self, dt):
+        return dt.tzname() is None
 
 
 class UTCChangingWalker(CalendarWalker):
@@ -125,6 +130,8 @@ class UTCChangingWalker(CalendarWalker):
         """Walk along a datetime.datetime object."""
         if self.is_UTC(dt):
             return dt.astimezone(self.new_timezone)
+        elif self.is_Floating(dt):
+            return dt.replace(tzinfo=self.new_timezone)
         return dt
 
 
