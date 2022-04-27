@@ -13,6 +13,9 @@ X-WR-TIMEZONE
    :target: https://pypi.python.org/pypi/x-wr-timezone#downloads
    :alt: Downloads from Pypi
 
+.. image:: https://img.shields.io/opencollective/all/open-web-calendar?label=support%20on%20open%20collective
+   :target: https://opencollective.com/open-web-calendar/
+   :alt: Support on Open Collective
 
 
 Some calendar providers introduce the non-standard ``X-WR-TIMEZONE`` parameter
