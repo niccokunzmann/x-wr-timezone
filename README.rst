@@ -73,7 +73,7 @@ You can get usage help on the command line:
 Python
 ------
 
-After you have installed the library, you an import it.
+After you have installed the library, you can import it.
 
 .. code:: python
 
