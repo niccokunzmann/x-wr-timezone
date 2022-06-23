@@ -68,9 +68,13 @@ build-package:
     - coverage report
     - coverage xml
   artifacts:
+    expire_in: 2 days
     reports:
-      cobertura: coverage.xml
-
+      coverage_report:
+        # format thanks to
+        # https://stackoverflow.com/a/72138320
+        coverage_format: cobertura
+        path: coverage.xml
 
 test-python-2.7:
   image: python:2.7
