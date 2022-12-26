@@ -104,21 +104,21 @@ Here is a full example which does about as much as this module is supposed to do
 
 - ``calendar`` is the ``icalendar.Calendar`` object.
 - ``timezone`` is an optional time zone. By default, the time zone in 
-    ``calendar['X-WR-TIMEZONE']`` is used to check if the calendar needs
-    changing.
-    When ``timezone`` is not ``None`` however, ``calendar['X-WR-TIMEZONE']``
-    will not be tested and it is assumed that the ``calendar`` should be
-    changed as if ``calendar['X-WR-TIMEZONE']`` had the value of ``timezone``.
-    This does not add or change the value of ``calendar['X-WR-TIMEZONE']``.
-    You would need to do that yourself.
-    ``timezone`` can be a string like ``"UTC"`` or ``"Europe/Berlin"`` or
-    a ``pytz.timezone`` or something that ``datetime`` accepts as a time zone..
+  ``calendar['X-WR-TIMEZONE']`` is used to check if the calendar needs
+  changing.
+  When ``timezone`` is not ``None`` however, ``calendar['X-WR-TIMEZONE']``
+  will not be tested and it is assumed that the ``calendar`` should be
+  changed as if ``calendar['X-WR-TIMEZONE']`` had the value of ``timezone``.
+  This does not add or change the value of ``calendar['X-WR-TIMEZONE']``.
+  You would need to do that yourself.
+  ``timezone`` can be a string like ``"UTC"`` or ``"Europe/Berlin"`` or
+  a ``pytz.timezone`` or something that ``datetime`` accepts as a time zone..
 - Return value: The ``calendar`` argument is not modified at all. The calendar
-    returned has the attributes and subcomponents of the ``calendar`` only
-    changed and copied where needed to return the proper value. As such,
-    the returned calendar might be identical to the one passed to the
-    function as the ``calendar`` argument. Keep that in mind if you modify the
-    return value.
+  returned has the attributes and subcomponents of the ``calendar`` only
+  changed and copied where needed to return the proper value. As such,
+  the returned calendar might be identical to the one passed to the
+  function as the ``calendar`` argument. Keep that in mind if you modify the
+  return value.
 
 
 Development
@@ -126,21 +126,24 @@ Development
 
 1. Clone the `repository <https://github.com/niccokunzmann/x-wr-timezone>`_ or its fork and ``cd x-wr-timezone``.
 2. Optional: Install virtualenv and Python3 and create a virtual environment:
-    .. code-block:: shell
 
-        pip install virtualenv
-        virtualenv -p python3 ENV
-        source ENV/bin/activate # you need to do this for each shell
+   .. code-block:: shell
+
+       pip install virtualenv
+       virtualenv -p python3 ENV
+       source ENV/bin/activate # you need to do this for each shell
 
 3. Install the packages and this module so it can be edited:
-    .. code-block:: shell
 
-        pip install -r test-requirements.txt -e .
+   .. code-block:: shell
+
+       pip install -r test-requirements.txt -e .
 
 4. Run the tests:
-    .. code-block:: shell
 
-        pytest
+   .. code-block:: shell
+
+       pytest
 
 New Releases
 ------------
@@ -152,9 +155,10 @@ To release new versions,
 3. create a commit and push it
 4. Wait for `CI tests <https://gitlab.com/niccokunzmann/x-wr-timezone/-/jobs>`_ to finish the build.
 5. run
-    .. code-block:: shell
 
-        python3 setup.py tag_and_deploy
+   .. code-block:: shell
+
+       python3 setup.py tag_and_deploy
 6. notify the issues about their release
 
 Testing
@@ -178,19 +182,24 @@ Changelog
 ---------
 
 - v0.0.5
-    - Revisit README and CLI and fix spelling mistakes.
-    - Modified behavior to treat events without time zone found in a calendar using the X-WR-TIMEZONE property, see `Pull Request 7 <https://github.com/niccokunzmann/x-wr-timezone/pull/7>`__
+
+  - Revisit README and CLI and fix spelling mistakes.
+  - Modified behavior to treat events without time zone found in a calendar using the X-WR-TIMEZONE property, see `Pull Request 7 <https://github.com/niccokunzmann/x-wr-timezone/pull/7>`__
 - v0.0.4
-    - Test automatic deployment with Gitlab CI.
+
+  - Test automatic deployment with Gitlab CI.
 - v0.0.3
-    - Use ``tzname()`` function of ``datetime`` to test for UTC. This helps support zoneinfo time zones.
-    - Split up visitor class and rename it to walker.
+
+  - Use ``tzname()`` function of ``datetime`` to test for UTC. This helps support zoneinfo time zones.
+  - Split up visitor class and rename it to walker.
 - v0.0.2
-    - Implement the ``timezone`` argument.
-    - Do not modify the value of the ``calendar`` argument and only copy it where needed. 
+
+  - Implement the ``timezone`` argument.
+  - Do not modify the value of the ``calendar`` argument and only copy it where needed. 
 - v0.0.1
-    - Initial release supports DTSTART, DTEND, EXDATE, RDATE, RECURRENCE-ID attributes of events.
-    - Command line interface as ``x-wr-timezone``.
+
+  - Initial release supports DTSTART, DTEND, EXDATE, RDATE, RECURRENCE-ID attributes of events.
+  - Command line interface as ``x-wr-timezone``.
 
 Related Work
 ------------
