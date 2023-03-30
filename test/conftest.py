@@ -1,5 +1,4 @@
 """Test and fixture initialization."""
-import x_wr_timezone
 import icalendar
 import pytest
 import sys
@@ -8,10 +7,11 @@ import tempfile
 import shutil
 import subprocess
 
-HERE = os.path.dirname(__file__)
-REPO = os.path.dirname(HERE)
+HERE = os.path.dirname(__file__) or "."
+REPO = os.path.join(HERE, "..")
 
 sys.path.append(REPO)
+import x_wr_timezone
 
 CALENDARS_FOLDER = os.path.join(HERE, "calendars")
 

@@ -49,6 +49,13 @@ Install using ``pip``:
 
     python3 -m pip install x-wr-timezone
 
+Support
+-------
+
+- `Donate using GitHub Sponsors <https://github.com/sponsors/niccokunzmann>`_
+- `Donate using Open Collective <https://opencollective.com/open-web-calendar/>`_
+- `Donate using thanks.dev <https://thanks.dev>`_
+
 Command Line Usage
 ------------------
 
