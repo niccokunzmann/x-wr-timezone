@@ -152,6 +152,27 @@ Development
 
        pytest
 
+To test all functions:
+
+   .. code-block:: shell
+
+       pytest --x-wr-timezone all
+
+Testing with ``tox``
+********************
+
+You can use ``tox`` to test the package in different Python versions.
+
+.. code-block:: shell
+
+    tox
+
+This tests all the different functionalities:
+
+.. code-block:: shell
+
+    tox -- --x-wr-timezone all
+
 New Releases
 ------------
 
