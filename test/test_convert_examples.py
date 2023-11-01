@@ -14,6 +14,8 @@ def assert_has_line(bytes, content, message):
 def test_input_to_output(to_standard, calendar_pair):
     """Test the calendars which are a pair of input and output."""
     output = to_standard(calendar_pair.input.as_icalendar())
+    print(output.walk("VEVENT")[0]["DTSTART"])
+    print(calendar_pair.output.as_icalendar().walk("VEVENT")[0]["DTSTART"])
     assert output == calendar_pair.output.as_icalendar(), calendar_pair.message
 
 
