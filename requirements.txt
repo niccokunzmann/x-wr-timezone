@@ -1,2 +1,2 @@
-icalendar
+icalendar>=5.0.11
 pytz
