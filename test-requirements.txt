@@ -1,3 +1,4 @@
 pytest
 restructuredtext-lint
 pygments
+icalendar>=5.0.11
