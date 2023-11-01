@@ -110,7 +110,7 @@ Here is a full example which does about as much as this module is supposed to do
 ``to_standard(calendar, timezone=None)`` has these parameters:
 
 - ``calendar`` is the ``icalendar.Calendar`` object.
-- ``timezone`` is an optional time zone. By default, the time zone in 
+- ``timezone`` is an optional time zone. By default, the time zone in
   ``calendar['X-WR-TIMEZONE']`` is used to check if the calendar needs
   changing.
   When ``timezone`` is not ``None`` however, ``calendar['X-WR-TIMEZONE']``
@@ -209,6 +209,12 @@ how to go about it.
 Changelog
 ---------
 
+- v0.0.6
+
+  - obsolete Python 3.7
+  - support Python 3.11
+  - fix localization issue for pytz when datetime has no timezone
+
 - v0.0.5
 
   - Revisit README and CLI and fix spelling mistakes.
@@ -223,7 +229,7 @@ Changelog
 - v0.0.2
 
   - Implement the ``timezone`` argument.
-  - Do not modify the value of the ``calendar`` argument and only copy it where needed. 
+  - Do not modify the value of the ``calendar`` argument and only copy it where needed.
 - v0.0.1
 
   - Initial release supports DTSTART, DTEND, EXDATE, RDATE, RECURRENCE-ID attributes of events.

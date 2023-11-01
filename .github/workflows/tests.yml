@@ -15,7 +15,6 @@ jobs:
       matrix:
         config:
         # [Python version, tox env]
-        - ["3.7",   "py37"]
         - ["3.8",   "py38"]
         - ["3.9",   "py39"]
         - ["3.10",  "py310"]
@@ -91,7 +90,7 @@ jobs:
     - name: deploy to pypi
       run: |
         # You will have to set the variables TWINE_USERNAME and TWINE_PASSWORD
-        # You can use a token specific to your project by setting the user name to 
+        # You can use a token specific to your project by setting the user name to
         # __token__ and the password to the token given to you by the PyPI project.
         # sources:
         #   - https://shambu2k.hashnode.dev/gitlab-to-pypi
