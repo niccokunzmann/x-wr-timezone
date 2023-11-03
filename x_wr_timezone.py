@@ -119,6 +119,15 @@ class CalendarWalker:
         return dt.tzname() is None
 
 
+def is_pytz(tzinfo):
+    """Whether the time zone requires localize() and normalize().
+
+    pytz requires these funtions to be used in order to correctly use the
+    time zones after operations.
+    """
+    return hasattr(tzinfo , "localize")
+
+
 class UTCChangingWalker(CalendarWalker):
     """Changes the UTC time zone into a new time zone."""
 
@@ -131,7 +140,7 @@ class UTCChangingWalker(CalendarWalker):
         if self.is_UTC(dt):
             return dt.astimezone(self.new_timezone)
         elif self.is_Floating(dt):
-            return dt.replace(tzinfo=self.new_timezone)
+            return self.new_timezone.localize(dt)
         return dt
 
 
