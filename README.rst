@@ -211,9 +211,12 @@ Changelog
 
 - v0.0.6
 
-  - obsolete Python 3.7
-  - support Python 3.11
-  - fix localization issue for pytz when datetime has no timezone
+  - Obsolete Python 3.7
+  - Support Python 3.11
+  - Fix localization issue for pytz when datetime has no timezone
+  - Run tests on GitHub Actions
+  - Require icalendar 5.0.11 for tests
+  - Fix pytz localization issue when dateime is not in UTC and has no time zone.
 
 - v0.0.5
 
