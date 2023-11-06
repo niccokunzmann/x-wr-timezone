@@ -43,7 +43,7 @@ jobs:
     - name: Test
       run: |
         test/test_code_quality.sh
-        tox -e ${{ matrix.config[1] }}
+        tox -e ${{ matrix.config[1] }} -- --x-wr-timezone=all
 
   deploy-tag-to-pypi:
     # only deploy on tags, see https://stackoverflow.com/a/58478262/1320237
