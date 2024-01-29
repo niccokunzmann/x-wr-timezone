@@ -41,7 +41,7 @@ METADATA = dict(
     author=__author__,
     author_email='niccokunzmann@rambler.ru',
     description='A Python module and program to convert calendars using X-WR-TIMEZONE to standard ones.',
-    license='LGPLv3+',
+    license='LGPL-3.0-or-later',
     url='https://github.com/niccokunzmann/x-wr-timezone',
     keywords='icalendar',
     entry_points="[console_scripts]\nx-wr-timezone = x_wr_timezone:main",
