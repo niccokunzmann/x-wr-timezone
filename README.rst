@@ -1,9 +1,9 @@
 X-WR-TIMEZONE
 =============
 
-.. image:: https://img.shields.io/gitlab/pipeline-status/niccokunzmann/x-wr-timezone?branch=master
-   :target: https://gitlab.com/niccokunzmann/x-wr-timezone/-/jobs
-   :alt: Gitlab CI build and test status
+.. image:: https://github.com/niccokunzmann/x-wr-timezone/actions/workflows/tests.yml/badge.svg
+   :target: https://github.com/niccokunzmann/x-wr-timezone/actions/workflows/tests.yml
+   :alt: CI build and test status
 
 .. image:: https://badge.fury.io/py/x-wr-timezone.svg
    :target: https://pypi.python.org/pypi/x-wr-timezone
@@ -181,7 +181,7 @@ To release new versions,
 1. edit the Changelog Section
 2. edit setup.py, the ``__version__`` variable
 3. create a commit and push it
-4. Wait for `CI tests <https://gitlab.com/niccokunzmann/x-wr-timezone/-/jobs>`_ to finish the build.
+4. Wait for `CI tests <https://github.com/niccokunzmann/x-wr-timezone/actions/workflows/tests.yml>`_ to finish the build.
 5. run
 
    .. code-block:: shell
@@ -199,7 +199,7 @@ They are required in that sense.
 Example code and ics files can be transferred into tests and speed up fixing bugs.
 
 You can view the tests in the `test folder
-<https://github.com/niccokunzmann/x-wr-timezones/tree/master/test>`_.
+<https://github.com/niccokunzmann/x-wr-timezones/tree/main/test>`_.
 If you have a calendar ICS file for which this library does not
 generate the desired output, you can add it to the ``test/calendars``
 folder and write tests for what you expect.
@@ -208,6 +208,11 @@ how to go about it.
 
 Changelog
 ---------
+
+- v0.0.7
+
+  - Rename master branch to main.
+  - Use proper SPDX license ID.
 
 - v0.0.6
 
