@@ -211,8 +211,9 @@ Changelog
 
 - v0.0.7
 
-  - Rename master branch to main.
-  - Use proper SPDX license ID.
+  - Rename master branch to main
+  - Use proper SPDX license ID
+  - Test Python 3.12
 
 - v0.0.6
 
