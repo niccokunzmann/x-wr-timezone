@@ -49,6 +49,12 @@ Install using ``pip``:
 
     python3 -m pip install x-wr-timezone
 
+Install with ``apt``:
+
+.. code:: shell
+
+    sudo apt-get install python-x-wr-timezone
+
 Support
 -------
 
