@@ -1,6 +1,7 @@
 """This test converts example calendars"""
 import pytest
 import x_wr_timezone
+import zoneinfo
 import pytz
 
 
@@ -93,8 +94,10 @@ def test_conversion_adds_the_time_zone(to_standard, calendars, calendar_name, co
 
 @pytest.mark.parametrize("tz,line,message,calendar_name", [
     ("Europe/Paris", ("DTSTART", "TZID=Europe/Paris" ,"20211223T030000"), "(1) Use string as timezone", "single-events-DTSTART-DTEND.in.ics"),
-    (pytz.timezone("Europe/Berlin"), ("DTSTART", "TZID=Europe/Berlin", "20211223T030000"), "(2) Use pytz.timezone as timezone", "single-events-DTSTART-DTEND.in.ics"),
-    (pytz.UTC, ("DTSTART", "20211222T170000Z"), "(3) Use pytz.UTC as timezone", "single-events-DTSTART-DTEND.in.ics"),
+    (zoneinfo.ZoneInfo("Europe/Berlin"), ("DTSTART", "TZID=Europe/Berlin", "20211223T030000"), "(2) Use zoneinfo's timezone as timezone", "single-events-DTSTART-DTEND.in.ics"),
+    (zoneinfo.ZoneInfo("UTC"), ("DTSTART", "20211222T170000Z"), "(3) Use zoninfo's UTC as timezone", "single-events-DTSTART-DTEND.in.ics"),
+    (pytz.timezone("Europe/Berlin"), ("DTSTART", "TZID=Europe/Berlin", "20211223T030000"), "(4) Use pytz.timezone as timezone", "single-events-DTSTART-DTEND.in.ics"),
+    (pytz.UTC, ("DTSTART", "20211222T170000Z"), "(5) Use pytz.UTC as timezone", "single-events-DTSTART-DTEND.in.ics"),
 ])
 def test_timezone_parameter(calendars, tz, line, message, calendar_name):
     calendar = calendars[calendar_name]

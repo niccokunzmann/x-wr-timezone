@@ -215,6 +215,12 @@ how to go about it.
 Changelog
 ---------
 
+- v1.0.0
+
+  - Use `zoneinfo` instead of `pytz`
+  - Remove `pytz` as a dependency
+  - Add `tzdata` as a dependency
+
 - v0.0.7
 
   - Rename master branch to main
