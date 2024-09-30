@@ -215,6 +215,15 @@ how to go about it.
 Changelog
 ---------
 
+- v1.0.0
+
+  - Use `zoneinfo` instead of `pytz`
+  - Test compatibility with `pytz` and `zoneinfo` as argument to `to_standard`
+  - Remove `pytz` as a dependency
+  - Add `tzdata` as a dependency
+  - Add typing
+  - Update Python versions
+
 - v0.0.7
 
   - Rename master branch to main

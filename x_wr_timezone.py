@@ -12,10 +12,11 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """Bring calendars using X-WR-TIMEZONE into RFC 5545 form."""
 import sys
-import pytz
+import zoneinfo
 from icalendar.prop import vDDDTypes, vDDDLists
 import datetime
 import icalendar
+from typing import Optional
 
 X_WR_TIMEZONE = "X-WR-TIMEZONE"
 
@@ -140,11 +141,13 @@ class UTCChangingWalker(CalendarWalker):
         if self.is_UTC(dt):
             return dt.astimezone(self.new_timezone)
         elif self.is_Floating(dt):
-            return self.new_timezone.localize(dt)
+            if is_pytz(self.new_timezone):
+                return self.new_timezone.localize(dt)
+            return dt.replace(tzinfo=self.new_timezone)
         return dt
 
 
-def to_standard(calendar, timezone=None):
+def to_standard(calendar : icalendar.Calendar, timezone:Optional[datetime.tzinfo]=None) -> icalendar.Calendar:
     """Make a calendar that might use X-WR-TIMEZONE compatible with RFC 5545.
 
     Arguments:
@@ -159,7 +162,7 @@ def to_standard(calendar, timezone=None):
     if timezone is None:
         timezone = calendar.get(X_WR_TIMEZONE, None)
     if timezone is not None and not isinstance(timezone, datetime.tzinfo):
-        timezone = pytz.timezone(timezone)
+        timezone = zoneinfo.ZoneInfo(timezone)
     if timezone is not None:
         walker = UTCChangingWalker(timezone)
         return walker.walk(calendar)

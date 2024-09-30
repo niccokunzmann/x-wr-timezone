@@ -9,3 +9,4 @@ __pycache__
 ENV2
 *.swp
 .tox
+.venv
