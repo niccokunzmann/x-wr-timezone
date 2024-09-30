@@ -215,7 +215,7 @@ how to go about it.
 Changelog
 ---------
 
-- v1.0.0
+- v1.0.1
 
   - Use `zoneinfo` instead of `pytz`
   - Test compatibility with `pytz` and `zoneinfo` as argument to `to_standard`
