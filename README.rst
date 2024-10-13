@@ -167,7 +167,7 @@ To test all functions:
 Testing with ``tox``
 ********************
 
-You can use ``tox`` to test the package in different Python versions.
+You can use ``tox`` to test the package in different Python versions, including Python 3.13.
 
 .. code-block:: shell
 
@@ -195,6 +195,9 @@ To release new versions,
        python3 setup.py tag_and_deploy
 6. notify the issues about their release
 
+### New in v1.0.2
+- Added support for Python 3.13
+
 Testing
 *******
 
@@ -214,6 +217,9 @@ how to go about it.
 
 Changelog
 ---------
+
+- v1.0.2
+  - Added support for Python 3.13
 
 - v1.0.1
 
