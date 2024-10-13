@@ -167,15 +167,15 @@ To test all functions:
 Testing with ``tox``
 ********************
 
-You can use ``tox`` to test the package in different Python versions, including Python 3.13.
+You can use ``tox`` to test the package in different Python versions.
 
-.. code-block:: shell
+.. code:: shell
 
     tox
 
 This tests all the different functionalities:
 
-.. code-block:: shell
+.. code:: shell
 
     tox -- --x-wr-timezone all
 
@@ -195,8 +195,16 @@ To release new versions,
        python3 setup.py tag_and_deploy
 6. notify the issues about their release
 
-### New in v1.0.2
-- Added support for Python 3.13
+Add/Remove a Python Version
+---------------------------
+
+
+If you need to add or remove a Python version, you need to modify these files:
+
+- ... README.rst in the changelog section
+- ... setup.py
+- ... tox.ini
+- ... tests.yml
 
 Testing
 *******
@@ -219,6 +227,7 @@ Changelog
 ---------
 
 - v1.0.2
+
   - Added support for Python 3.13
 
 - v1.0.1
