@@ -18,8 +18,9 @@ X-WR-TIMEZONE
    :alt: Support on Open Collective
 
 
-Some calendar providers introduce the non-standard ``X-WR-TIMEZONE`` parameter
-to ICS calendar files.
+Some calendar creators such as Google Calendar
+introduce the non-standard ``X-WR-TIMEZONE`` parameter
+to ICS calendar files to change the timezone.
 Strict interpretations according to RFC 5545 ignore the ``X-WR-TIMEZONE``
 parameter.
 This causes the times of the events to differ from those
