@@ -1,2 +1,3 @@
-icalendar
+icalendar>=6.1.0
 tzdata
+click
