@@ -93,7 +93,8 @@ After you have installed the library, you can import it.
 
     import x_wr_timezone
 
-The function ``to_standard()`` converts an ``icalendar`` object.
+The function ``to_standard()`` converts an `icalendar.Calendar
+<https://icalendar.readthedocs.io/en/latest/api.html#icalendar.cal.Calendar>`_.
 
 .. code:: python
 
