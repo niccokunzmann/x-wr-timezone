@@ -3,3 +3,4 @@ restructuredtext-lint
 pygments
 icalendar>=5.0.11
 pytz
+pytest_click

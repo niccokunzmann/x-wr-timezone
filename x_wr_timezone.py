@@ -11,12 +11,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """Bring calendars using X-WR-TIMEZONE into RFC 5545 form."""
+from io import BytesIO
 import sys
 import zoneinfo
 from icalendar.prop import vDDDTypes, vDDDLists
 import datetime
 import icalendar
 from typing import Optional
+import click
 
 X_WR_TIMEZONE = "X-WR-TIMEZONE"
 
@@ -147,28 +149,48 @@ class UTCChangingWalker(CalendarWalker):
         return dt
 
 
-def to_standard(calendar : icalendar.Calendar, timezone:Optional[datetime.tzinfo]=None) -> icalendar.Calendar:
+def to_standard(
+        calendar : icalendar.Calendar,
+        timezone:Optional[datetime.tzinfo]=None,
+        add_timezone_component:bool=False
+    ) -> icalendar.Calendar:
     """Make a calendar that might use X-WR-TIMEZONE compatible with RFC 5545.
 
     Arguments:
-    - calendar is an icalendar.Calendar object. It does not need to have
-        the X-WR-TIMEZONE property but if it has, calendar  will be converted
-        to conform to RFC 5545.
-    - timezone is an optional timezone argument if you want to override the
-        existence of the actual X-WR-TIMEZONE property of the calendar.
-        This can be a string like "Europe/Berlin" or "UTC" or a
-        pytz.timezone or any other timezone accepted by the datetime module.
+    
+        calendar: is an icalendar.Calendar object. It does not need to have
+            the X-WR-TIMEZONE property but if it has, calendar  will be converted
+            to conform to RFC 5545.
+            
+        timezone: an optional timezone argument if you want to override the
+            existence of the actual X-WR-TIMEZONE property of the calendar.
+            This can be a string like "Europe/Berlin" or "UTC" or a
+            pytz.timezone or any other timezone accepted by the datetime module.
+        
+        add_timezone_component: whether to add a VTIMEZONE component to the result.
     """
     if timezone is None:
         timezone = calendar.get(X_WR_TIMEZONE, None)
     if timezone is not None and not isinstance(timezone, datetime.tzinfo):
         timezone = zoneinfo.ZoneInfo(timezone)
+    result : icalendar.Calendar = calendar
     if timezone is not None:
         walker = UTCChangingWalker(timezone)
-        return walker.walk(calendar)
-    return calendar
+        result = walker.walk(result)
+        if add_timezone_component:
+            new_cal = result.copy()
+            new_cal.subcomponents = calendar.subcomponents[:]
+            result = new_cal
+            result.subcomponents.insert(0, icalendar.Timezone.from_tzinfo(timezone))
+    return result
 
-def main():
+@click.command()
+@click.argument('in_file', type=click.File('rb'), default="-")
+@click.argument('out_file', type=click.File('wb'), default="-")
+@click.version_option()
+@click.help_option()
+@click.option('--add-timezone/--no-timezone', default=True, help="Add a VTIMEZONE component to the result.")
+def main(in_file:BytesIO, out_file:BytesIO, add_timezone: bool):
     """x-wr-timezone converts ICSfiles with X-WR-TIMEZONE to use RFC 5545 instead.
 
     Convert input:
@@ -181,6 +203,9 @@ def main():
 
         x-wr-timezone in.ics out.ics
 
+    By default, x-wr-timezone will add a VTIMEZONE component to the result.
+    Use --no-vtimezone to remove it. (Added in v2.0.0)
+
     Get help:
 
         x-wr-timezone --help
@@ -191,19 +216,9 @@ def main():
 
     License: LPGLv3+
     """
-    if len(sys.argv) == 1:
-        in_file = getattr(sys.stdin, "buffer", sys.stdin)
-        out_file = getattr(sys.stdout, "buffer", sys.stdout)
-    elif len(sys.argv) == 3:
-        in_file = open(sys.argv[1], 'rb')
-        out_file = open(sys.argv[2], 'wb')
-    else:
-        sys.stdout.write(main.__doc__)
-        return 0
-    input = in_file.read()
-    calendar = icalendar.Calendar.from_ical(input)
-    output = to_standard(calendar).to_ical()
-    out_file.write(output)
+    calendar = icalendar.Calendar.from_ical(in_file.read())
+    new_cal = to_standard(calendar, add_timezone_component=add_timezone)
+    out_file.write(new_cal.to_ical())
     return 0
 
 

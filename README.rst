@@ -227,9 +227,16 @@ how to go about it.
 Changelog
 ---------
 
+- v2.0.0
+
+  - Add VTIMEZONE component by default to ``x-wr-timezone`` command.
+  - Add ``--no-timezone`` parameter to skip adding the VTIMEZONE component.
+  - Add ``add_timezone_component=False`` parameter to ``to_standard()`` to optionally add a timezone component in the resulting ``icalendar.Calendar``.
+  - Add ``click`` dependency.
+
 - v1.0.2
 
-  - Added support for Python 3.13
+  - Add support for Python 3.13
 
 - v1.0.1
 

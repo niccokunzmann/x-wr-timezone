@@ -1,4 +1,5 @@
 """Test and fixture initialization."""
+from typing import Callable
 import icalendar
 import pytest
 import sys
@@ -110,10 +111,12 @@ def output_calendar(request):
     return request.param
 
 
+CMD_DEFAULT_ARGS = ["--no-timezone"]
+
 def to_standard_cmd_stdio(calendar):
     """Use the command line and piping."""
     input = calendar.to_ical()
-    process = subprocess.Popen([EXECUTABLE], stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+    process = subprocess.Popen([EXECUTABLE]+CMD_DEFAULT_ARGS, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
     output = process.communicate(input)[0]
     assert process.returncode == 0, "The process should not error."
     return icalendar.Calendar.from_ical(output)
@@ -127,7 +130,7 @@ def to_standard_cmd_file(calendar):
         out_path = os.path.join(d, "out.ics")
         with open(in_path, 'wb') as f:
             f.write(input)
-        subprocess.check_call([EXECUTABLE, in_path, out_path])
+        subprocess.check_call([EXECUTABLE] + CMD_DEFAULT_ARGS + [in_path, out_path])
         with open(out_path, 'rb') as f:
             output = f.read()
     finally:
@@ -184,3 +187,15 @@ def calendars():
 def todo():
     """Skip a test because it needs to be written first."""
     pytest.skip("This test is not yet implemented.")
+
+
+@pytest.fixture()
+def cal_cmd(cli_runner, monkeypatch) -> Callable[[list[str]], icalendar.Calendar]:
+    """Run the x-wr-timezone command line interface. and return the result."""
+    def _cal_cmd(args:list[str]) -> str:
+        # see https://github.com/pallets/click/issues/1437#issuecomment-562199150
+        monkeypatch.chdir(CALENDARS_FOLDER)
+        result = cli_runner.invoke(x_wr_timezone.main, args, )
+        assert result.exit_code == 0, result.output
+        return icalendar.Calendar.from_ical(result.output)
+    return _cal_cmd
