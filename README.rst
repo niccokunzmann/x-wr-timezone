@@ -18,8 +18,9 @@ X-WR-TIMEZONE
    :alt: Support on Open Collective
 
 
-Some calendar providers introduce the non-standard ``X-WR-TIMEZONE`` parameter
-to ICS calendar files.
+Some calendar creators such as Google Calendar
+introduce the non-standard ``X-WR-TIMEZONE`` parameter
+to ICS calendar files to change the timezone.
 Strict interpretations according to RFC 5545 ignore the ``X-WR-TIMEZONE``
 parameter.
 This causes the times of the events to differ from those
@@ -169,13 +170,13 @@ Testing with ``tox``
 
 You can use ``tox`` to test the package in different Python versions.
 
-.. code-block:: shell
+.. code:: shell
 
     tox
 
 This tests all the different functionalities:
 
-.. code-block:: shell
+.. code:: shell
 
     tox -- --x-wr-timezone all
 
@@ -194,6 +195,17 @@ To release new versions,
 
        python3 setup.py tag_and_deploy
 6. notify the issues about their release
+
+Add/Remove a Python Version
+---------------------------
+
+
+If you need to add or remove a Python version, you need to modify these files:
+
+- ... README.rst in the changelog section
+- ... setup.py
+- ... tox.ini
+- ... tests.yml
 
 Testing
 *******
@@ -221,6 +233,10 @@ Changelog
   - Add ``--no-timezone`` parameter to skip adding the VTIMEZONE component.
   - Add ``add_timezone_component=False`` parameter to ``to_standard()`` to optionally add a timezone component in the resulting ``icalendar.Calendar``.
   - Add ``click`` dependency.
+
+- v1.0.2
+
+  - Add support for Python 3.13
 
 - v1.0.1
 
