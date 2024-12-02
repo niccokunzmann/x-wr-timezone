@@ -59,9 +59,10 @@ Install with ``apt``:
 Support
 -------
 
-- `Donate using GitHub Sponsors <https://github.com/sponsors/niccokunzmann>`_
-- `Donate using Open Collective <https://opencollective.com/open-web-calendar/>`_
-- `Donate using thanks.dev <https://thanks.dev>`_
+- `Fund with GitHub Sponsors <https://github.com/sponsors/niccokunzmann>`_
+- `Fund on Open Collective <https://opencollective.com/open-web-calendar/>`_
+- `Fund with thanks.dev <https://thanks.dev>`_
+- `Fund on Tidelift <https://tidelift.com/lifter/search/pypi/x-wr-timezone>`_
 
 Command Line Usage
 ------------------
@@ -282,6 +283,11 @@ Changelog
 
   - Initial release supports DTSTART, DTEND, EXDATE, RDATE, RECURRENCE-ID attributes of events.
   - Command line interface as ``x-wr-timezone``.
+
+Security Policy
+---------------
+
+We have a `Security Policy <https://github.com/niccokunzmann/x-wr-timezone/security/policy>`_ in place.
 
 Related Work
 ------------
