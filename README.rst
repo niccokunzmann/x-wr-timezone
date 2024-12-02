@@ -163,9 +163,9 @@ Development
 
 To test all functions:
 
-   .. code-block:: shell
+.. code-block:: shell
 
-       pytest --x-wr-timezone all
+    pytest --x-wr-timezone all
 
 Testing with ``tox``
 ********************
