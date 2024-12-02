@@ -287,7 +287,7 @@ Changelog
 Security Policy
 ---------------
 
-We have a `Security Policy <https://github.com/niccokunzmann/x-wr-timezone/security/policy>`_ in place.
+We have a `Security Policy <https://github.com/niccokunzmann/x-wr-timezone/security/policy>`__ in place.
 
 Related Work
 ------------
