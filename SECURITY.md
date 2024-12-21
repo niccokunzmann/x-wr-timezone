@@ -1,5 +1,5 @@
-Security contact information
-============================
+Security Policy
+===============
 
 Supported Versions
 ------------------
