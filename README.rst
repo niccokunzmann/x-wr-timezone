@@ -229,6 +229,11 @@ how to go about it.
 Changelog
 ---------
 
+- v2.0.1
+
+  - Reuse the generated timezone component because that takes a long time.
+  - Fix bug where the timezone was not changed in the result if you add the component.
+
 - v2.0.0
 
   - Add VTIMEZONE component by default to ``x-wr-timezone`` command.

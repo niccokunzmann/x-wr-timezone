@@ -11,6 +11,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """Bring calendars using X-WR-TIMEZONE into RFC 5545 form."""
+import functools
 from io import BytesIO
 import sys
 import zoneinfo
@@ -131,6 +132,15 @@ def is_pytz(tzinfo):
     return hasattr(tzinfo , "localize")
 
 
+@functools.cache
+def get_timezone_component(timezone:datetime.tzinfo) -> icalendar.Timezone:
+    """Return a timezone component for the tzid and cache it.
+    
+    The result is cached.
+    """
+    return icalendar.Timezone.from_tzinfo(timezone)
+
+
 class UTCChangingWalker(CalendarWalker):
     """Changes the UTC time zone into a new time zone."""
 
@@ -172,16 +182,17 @@ def to_standard(
     if timezone is None:
         timezone = calendar.get(X_WR_TIMEZONE, None)
     if timezone is not None and not isinstance(timezone, datetime.tzinfo):
-        timezone = zoneinfo.ZoneInfo(timezone)
+        timezone = zoneinfo.ZoneInfo(str(timezone))
     result : icalendar.Calendar = calendar
+    del calendar
     if timezone is not None:
         walker = UTCChangingWalker(timezone)
         result = walker.walk(result)
         if add_timezone_component:
             new_cal = result.copy()
-            new_cal.subcomponents = calendar.subcomponents[:]
+            new_cal.subcomponents = result.subcomponents[:]
             result = new_cal
-            result.subcomponents.insert(0, icalendar.Timezone.from_tzinfo(timezone))
+            result.subcomponents.insert(0, get_timezone_component(timezone))
     return result
 
 @click.command()
@@ -224,5 +235,5 @@ def main(in_file:BytesIO, out_file:BytesIO, add_timezone: bool):
 
 __all__ = [
     "main", "to_standard", "UTCChangingWalker", "list_is",
-    "X_WR_TIMEZONE", "CalendarWalker"
+    "X_WR_TIMEZONE", "CalendarWalker", "get_timezone_component",
 ]
