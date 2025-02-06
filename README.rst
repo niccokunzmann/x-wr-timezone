@@ -135,7 +135,9 @@ Here is a full example which does about as much as this module is supposed to do
   the returned calendar might be identical to the one passed to the
   function as the ``calendar`` argument. Keep that in mind if you modify the
   return value.
-
+- ``add_timezone_component : bool = False``. If set to True, it adds the VTIMEZONE
+  component to the calendar object. This is required to have a valid RFC5545
+  calendar for exporting and sharing but not to process the events and other components.
 
 Development
 -----------
